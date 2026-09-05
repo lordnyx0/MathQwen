@@ -110,3 +110,7 @@ orm, lm_head) vinculados via hardlink NTFS (0 bytes adicionais de disco físico)
   - **Status:** $\mathbf{CONFIRMADA\ (ORIENTAÇÃO\ FUNCIONAL\ LOCALIZADA)}$
   - **Descoberta Central:** As bases compactas $U_c(32)$ ancoram o espaço compartilhado. A otimização de rotação em $\text{SO}(32)$ via álgebra de Lie estabeleceu o novo recorde de $\mathbf{PPL = 186{,}55}$ com apenas **$164.865$ parâmetros** ($6{,}29\%$ do SVD-256 de 2.62M parâmetros).
   - **Ablação Causal:** Comprovada a dissociação entre energia euclidiana e sensibilidade funcional ($u_4, u_{10}, u_5$ têm alta alavancagem semântica, enquanto $u_1$ tem sub-sensibilidade).
+
+- **Doc 17 — Mapeamento Angular do Núcleo Compartilhado em L63 (`docs/17_FUNCTIONAL_ANGULAR_MANIFOLD.md`)**:
+  - **Status:** $\mathbf{CONFIRMADA\ (ORIENTAÇÃO\ INTERNA\ PRIVILEGIADA\ LOCALIZADA)}$
+  - **Descoberta Central:** Identificado vale angular estrito, periódico e convexo centrado em $\theta^* = 155{,}25^\circ$ no plano $(u_3, u_{10})$ com curvatura local $\frac{\partial^2 PPL}{\partial \theta^2} = +0{,}2573 > 0$, atingindo $\mathbf{PPL = 186{,}33}$ e recorde de matemática no GSM8K ($\mathbf{PPL = 832{,}79}$, ganho de $-10{,}27$ pts).
