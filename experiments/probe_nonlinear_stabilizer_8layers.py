@@ -88,7 +88,7 @@ def eval_logit_lens(h_test: torch.Tensor, targets: torch.Tensor, norm_mod, lm_he
     with torch.no_grad():
         for b_start in range(0, B, chunk_size):
             b_end = min(b_start + chunk_size, B)
-            h_chunk = h_test[b_start:b_end]
+            h_chunk = h_test[b_start:b_end].to(dtype=torch.bfloat16)
             z_S = F.linear(norm_mod(h_chunk), lm_head_w)
             z_S_pred = z_S[:, :-1, :].reshape(-1, vocab_size).float()
 
@@ -97,7 +97,7 @@ def eval_logit_lens(h_test: torch.Tensor, targets: torch.Tensor, norm_mod, lm_he
             total_nll += nll
 
             if h_teacher_test is not None:
-                h_T_chunk = h_teacher_test[b_start:b_end]
+                h_T_chunk = h_teacher_test[b_start:b_end].to(dtype=torch.bfloat16)
                 z_T = F.linear(norm_mod(h_T_chunk), lm_head_w)
                 z_T_pred = z_T[:, :-1, :].reshape(-1, vocab_size).float()
 
@@ -368,7 +368,7 @@ def run_probe_experiment():
                     opt_mf.zero_grad()
                     z_tr = F.gelu(torch.matmul(h_tr_3d.float(), W_d_mf.float())).to(dtype=torch.bfloat16)
                     corr_tr = torch.matmul(z_tr, W_u_mf)
-                    alpha_curr = 1.0 + delta_alpha_mf
+                    alpha_curr = (1.0 + delta_alpha_mf).to(dtype=torch.bfloat16)
                     h_s_tr = alpha_curr * h_tr_3d + corr_tr
 
                     loss_mse = torch.norm((h_s_tr.reshape(-1, 5120) - y_tr).float()) / norm_y_tr
@@ -447,7 +447,7 @@ def run_probe_experiment():
                     opt_kd.zero_grad()
                     z_tr = F.gelu(torch.matmul(h_tr_3d.float(), W_d_kd.float())).to(dtype=torch.bfloat16)
                     corr_tr = torch.matmul(z_tr, W_u_kd)
-                    alpha_curr = 1.0 + delta_alpha_kd
+                    alpha_curr = (1.0 + delta_alpha_kd).to(dtype=torch.bfloat16)
                     h_s_tr = alpha_curr * h_tr_3d + corr_tr
 
                     loss_mse = torch.norm((h_s_tr.reshape(-1, 5120) - y_tr).float()) / norm_y_tr
@@ -455,7 +455,7 @@ def run_probe_experiment():
                     loss_alpha = 10.0 * (delta_alpha_kd ** 2)
 
                     # Soft-KD com T=2 em micro-batch de 8 seqs
-                    h_s_tr_norm = norm_mod(h_s_tr[:8])
+                    h_s_tr_norm = norm_mod(h_s_tr[:8].to(dtype=torch.bfloat16))
                     z_s_tr = F.linear(h_s_tr_norm, lm_head_w)
                     log_p_s_T2 = F.log_softmax(z_s_tr.float() / 2.0, dim=-1)
                     p_prof_sub = p_prof_tr_T2[:8]

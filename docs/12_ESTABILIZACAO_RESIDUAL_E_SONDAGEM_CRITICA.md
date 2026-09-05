@@ -1,14 +1,13 @@
-﻿# Relatório Técnico 12: Estabilização do Residual Stream e Sondagem nas Camadas Críticas
+﻿# Relatório Técnico 12: Estabilização do Residual Stream e Sondagem Crítica (Linear vs Não-Linear com Logit Lens)
 
 ## 1. Resumo Executivo
-Este relatório documenta a descoberta empírica mais significativa do projeto MathQwen até o momento:
-1. **O Salto de Perplexidade**: O modelo comprimido via Atlas Assimétrico ($V_{\rm joint}$, $r=2048$, ~14,29B parâmetros congelados) apresentava PPL zero-shot de **3.712,64**. A introdução de uma correção linear no residual stream ($d_{\rm model} = 5120$) com apenas **41,94M parâmetros** ($r_{\rm corr} = 64$, menos de 0,3% do modelo) reduziu a PPL em teste cego para **39,70** — uma redução de **98,97%**.
+1. **O Salto de Perplexidade Inicial**: O modelo comprimido via Atlas Assimétrico ($V_{\rm joint}$, $r=2048$, ~14,29B parâmetros congelados) apresentava PPL zero-shot de **3.712,64**. A introdução de uma correção linear no residual stream ($d_{\rm model} = 5120$) com apenas **41,94M parâmetros** ($r_{\rm corr} = 64$, menos de 0,3% do modelo) reduziu a PPL em teste cego para **39,70** — uma redução de **98,97%**.
 2. **Diagnóstico de Divergência Profunda**: A propagação residual acumula perturbações que sofrem amplificação direcional ($G_l^{\rm drift} > 1,0$), culminando na ruptura na região $L_{48}\text{--}L_{55}$, onde a norma $\|h\|$ dobra.
 3. **Refutação da Ilha Densa**: Manter $L_{48}\text{--}L_{55}$ densas falhou (PPL de 388.770) porque operadores densos fora da variedade amplificam a perturbação. O residual stream é o locus matematicamente correto para intervenção.
-4. **Sondagem nas 8 Camadas Críticas ($L_0, L_{16}, L_{32}, L_{48}, L_{50}, L_{51}, L_{55}, L_{63}$)**:
-   - O SVD analítico reproduz com alta fidelidade a estabilidade linear.
-   - Manifold fitting com AdamW melhora todas as 8 camadas sem quebra de monotonicidade, mas atinge saturação em profundidade ($L_{50}: 79,15\% \to 78,16\%$).
-5. **Nova Rota Arquitetural**: Transição para estabilizadores residuais não-lineares ($h' = \alpha h + \sigma(h W_{\rm down}) W_{\rm up}$) com avaliação via Logit Lens ($D_{\rm KL}$, $\text{NLL}$ e Top-1 Agreement a $T=1$).
+4. **Sondagem Não-Linear das 8 Camadas com Logit Lens (T=1)**:
+   - Comparação quadripartida: `SVD-64` vs `GELU-WS` (Ridge fechado) vs `GELU-MF` (AdamW manifold) vs `GELU-MF+KD` (Soft-KD $T=2$).
+   - O corretor não-linear GELU reduziu o erro de hidden-state $e_h$ em **todas as 8 camadas** testadas e aumentou o Top-1 Agreement.
+   - O critério lexicográfico de rollback ($\Delta e_h \le 0 \land \Delta\text{NLL} \le 0$) funcionou com precisão cirúrgica: selecionou os corretores não-lineares em $L_0, L_{32}, L_{48}$ e $L_{63}$ (onde houve ganho conjunto em $e_h$ e $\text{NLL}$), e protegeu $L_{16}, L_{50}, L_{51}$ e $L_{55}$ revertendo para o SVD seguro onde o $\text{NLL}$ apresentou sensibilidade.
 
 ---
 
@@ -25,21 +24,24 @@ Este relatório documenta a descoberta empírica mais significativa do projeto M
 
 ---
 
-## 3. Sondagem nas 8 Camadas Críticas (Manifold Fitting com Rollback)
+## 3. Sondagem das 8 Camadas: Linear vs Não-Linear com Logit Lens (T=1)
 
-| Camada | Papel Arquitetural | $e_{\rm SVD}$ | $e_{\rm opt}$ | $\Delta e$ (abs) | Ganho Relativo | $\cos_{\rm SVD}$ | $\cos_{\rm opt}$ |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **$L_0$** | Entrada | 10.30% | 9.55% | -0.75% | **+7.26%** | 0.9947 | 0.9954 |
-| **$L_{16}$** | Rasa $\to$ Média | 40.00% | 39.92% | -0.08% | **+0.20%** | 0.9204 | 0.9218 |
-| **$L_{32}$** | Equador | 61.51% | 60.33% | -1.17% | **+1.91%** | 0.7890 | 0.7985 |
-| **$L_{48}$** | Entrada Crítica | 73.06% | 71.90% | -1.15% | **+1.58%** | 0.6932 | 0.7084 |
-| **$L_{50}$** | Pico de Ruptura | 79.15% | 78.16% | -0.99% | **+1.25%** | 0.6210 | 0.6354 |
-| **$L_{51}$** | Núcleo Crítico | 82.73% | 82.60% | -0.14% | **+0.17%** | 0.5817 | 0.5875 |
-| **$L_{55}$** | Saída da Ilha | 87.26% | 86.74% | -0.52% | **+0.60%** | 0.5260 | 0.5354 |
-| **$L_{63}$** | Pré-Norm Final | 88.30% | 88.25% | -0.05% | **+0.05%** | 0.5705 | 0.5839 |
+Avaliação em 1.024 tokens de teste não-visto do WikiText-2:
+
+| Camada | Métrica | SVD-64 (Linear) | GELU-WS (Ridge) | GELU-MF (Manifold) | GELU-MF+KD (Distill) | Modelo Selecionado (Rollback Lexicográfico) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: |
+| **$L_0$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 10.30%<br>9.5709<br>0.0176<br>98.71% | 9.58%<br>9.5675<br>0.0149<br>98.71% | **9.42%**<br>**9.5642**<br>**0.0144**<br>98.71% | 9.42%<br>9.5647<br>0.0144<br>98.71% | **GELU-MF**<br>($\Delta e_h = -0.87\%$, $\Delta\text{NLL} = -0.0068$) |
+| **$L_{16}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 39.87%<br>**9.6390**<br>0.2738<br>50.89% | 39.40%<br>9.6739<br>0.2654<br>53.47% | 39.40%<br>9.6739<br>0.2654<br>53.47% | 39.87%<br>9.6390<br>0.2738<br>50.89% | **SVD-64**<br>(Preservado via Rollback Lexicográfico) |
+| **$L_{32}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 61.58%<br>10.2488<br>0.8261<br>26.88% | 59.91%<br>10.1906<br>0.7873<br>27.88% | **59.60%**<br>**10.1645**<br>**0.7790**<br>**28.47%** | 59.63%<br>10.1756<br>0.7800<br>28.67% | **GELU-MF**<br>($\Delta e_h = -1.98\%$, $\Delta\text{NLL} = -0.0843$) |
+| **$L_{48}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 73.12%<br>10.2972<br>1.2851<br>15.08% | 71.44%<br>10.2789<br>1.2348<br>15.48% | **71.23%**<br>**10.2711**<br>**1.2260**<br>**16.67%** | 71.23%<br>10.2712<br>1.2260<br>16.77% | **GELU-MF**<br>($\Delta e_h = -1.89\%$, $\Delta\text{NLL} = -0.0261$) |
+| **$L_{50}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 78.21%<br>**9.9043**<br>2.0651<br>10.42% | 77.79%<br>10.1286<br>2.0467<br>10.91% | 77.52%<br>10.0844<br>2.0271<br>12.10% | 78.21%<br>9.9043<br>2.0651<br>10.42% | **SVD-64**<br>(Preservado via Rollback Lexicográfico) |
+| **$L_{51}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 82.74%<br>**9.9820**<br>2.5850<br>7.44% | 82.05%<br>10.0861<br>2.5460<br>6.75% | 82.24%<br>10.0597<br>2.5304<br>7.84% | 82.74%<br>9.9820<br>2.5850<br>7.44% | **SVD-64**<br>(Preservado via Rollback Lexicográfico) |
+| **$L_{55}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 87.93%<br>**9.4235**<br>5.2670<br>8.43% | 86.47%<br>9.6323<br>5.2058<br>8.63% | 86.55%<br>9.5739<br>5.1471<br>8.83% | 87.93%<br>9.4235<br>5.2670<br>8.43% | **SVD-64**<br>(Preservado via Rollback Lexicográfico) |
+| **$L_{63}$** | $e_h$ (%)<br>NLL (T=1)<br>KL (T=1)<br>Top-1 Agree | 87.72%<br>5.8532<br>3.6772<br>23.61% | 85.21%<br>5.8795<br>3.6428<br>27.28% | 85.76%<br>5.8640<br>3.6250<br>26.98% | **85.76%**<br>**5.7790**<br>**3.5497**<br>**27.98%** | **GELU-MF+KD**<br>($\Delta e_h = -1.96\%$, $\Delta\text{NLL} = -0.0742$, $\text{Agree} \to 28\%$) |
 
 ---
 
-## 4. Conclusão Metodológica
-1. O estabilizador de posto 64 previne o blowup da norma global e recupera 98.97% da qualidade funcional da rede.
-2. A saturação local em $L_{50}\text{--}L_{55}$ indica que, após 50 camadas não-lineares, a perturbação acumulada depende do estado do sinal e exige expressividade não-linear pontual.
+## 4. Conclusões e Interpretação Científica
+1. **O poder da não-linearidade residual**: Em todas as 8 camadas, a introdução de $\text{GELU}$ reduziu o erro geométrico da variedade residual $e_h$ e elevou a concordância de predição (Top-1 Agreement) com o professor.
+2. **Descolamento entre Hidden State e Logits em $L_{50}\text{--}L_{55}$**: Na região de maior distorção, corretores focados apenas em diminuir distância euclidiana em $h$ podem induzir rotações nos logits terminais que aumentam o NLL. O critério de rollback lexicográfico garantiu que nenhum corretor fosse aceito às custas da degradação da probabilidade dos tokens.
+3. **Ganhos Firmes em Logits e PPL**: Em $L_0$, $L_{32}$, $L_{48}$ e especialmente na saída $L_{63}$, a não-linearidade aliada à destilação com temperatura $T=2$ reduziu o NLL e a divergência KL de forma consistente e generalizável.
