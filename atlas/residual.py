@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """Módulos de estabilização do residual stream (Linear e Não-Linear com warm-start)."""
 import torch
 import torch.nn as nn
@@ -9,6 +9,14 @@ class LinearResidualStabilizer(nn.Module):
         super().__init__()
         self.W_down = nn.Parameter(W_down.clone())
         self.W_up = nn.Parameter(W_up.clone())
+
+    def freeze(self):
+        self.W_down.requires_grad = False
+        self.W_up.requires_grad = False
+
+    def unfreeze(self):
+        self.W_down.requires_grad = True
+        self.W_up.requires_grad = True
 
     def forward(self, h: torch.Tensor) -> torch.Tensor:
         corr = torch.matmul(torch.matmul(h, self.W_down), self.W_up)
@@ -21,11 +29,29 @@ class NonLinearResidualStabilizer(nn.Module):
         self.W_up = nn.Parameter(W_up.clone())
         self.delta_alpha = nn.Parameter(torch.tensor([delta_alpha], dtype=torch.float32, device=W_down.device))
 
+    def freeze(self):
+        self.W_down.requires_grad = False
+        self.W_up.requires_grad = False
+        self.delta_alpha.requires_grad = False
+
+    def unfreeze(self):
+        self.W_down.requires_grad = True
+        self.W_up.requires_grad = True
+        self.delta_alpha.requires_grad = True
+
     def forward(self, h: torch.Tensor) -> torch.Tensor:
         z = F.gelu(torch.matmul(h.float(), self.W_down.float())).to(dtype=h.dtype)
         corr = torch.matmul(z, self.W_up)
         alpha = (1.0 + self.delta_alpha).to(dtype=h.dtype)
         return alpha * h + corr
+
+def freeze_backbone_and_isolate_stabilizer(layer_module: nn.Module, stabilizer: nn.Module = None):
+    """Garante estruturalmente que os parâmetros do backbone permaneçam congelados (requires_grad=False)."""
+    for param in layer_module.parameters():
+        param.requires_grad = False
+    if stabilizer is not None:
+        for param in stabilizer.parameters():
+            param.requires_grad = True
 
 def fit_svd_stabilizer(X_calib: torch.Tensor, Y_calib: torch.Tensor, r_corr: int = 64, lambda_reg: float = 1e-3):
     E = Y_calib - X_calib

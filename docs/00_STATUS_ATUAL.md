@@ -42,3 +42,16 @@ O projeto MathQwen passou por uma bifurcação metodológica e científica funda
 1. **A Descoberta do Residual Stream**: O Atlas Assimétrico zero-shot ($r=2048$) gera divergência na variedade residual acumulada ($\text{PPL} = 3.712,64$). Uma correção linear compacta no residual stream ($d_{\rm model} = 5120$) de apenas **41,94M parâmetros** ($r=64$, $< 0,3\%$ da rede) reduz a PPL para **39,70** (queda de **98,97%**).
 2. **Amplificação Direcional e Ruptura em $L_{48}\text{--}L_{55}$**: As camadas intermediárias acumulam perturbações com ganho secante $G_l^{\rm drift} > 1,0$, culminando em uma duplicação da norma $\|h\|$ na região $L_{48}\text{--}L_{55}$.
 3. **Não-Linearidade Residual e Rollback Lexicográfico**: A introdução de não-linearidade suave ($\text{GELU}$) supera o SVD linear em erro de representação ($e_h$) em todas as 8 camadas críticas. O critério de rollback lexicográfico garante que o modelo só aceite corretores não-lineares quando houver redução simultânea de $e_h$ e $\text{NLL}$.
+
+---
+
+## 4. Conformidade e Validação Arquitetural Pós-Auditoria (Commit ec26534+)
+
+Em conformidade com a auditoria rigorosa do repositório:
+1. **Especificação Canônica Corrigida**: `atlas/config.py` define exatamente `intermediate_size: int = 17408` ($d_{\rm ff}$ oficial do Qwen3.8-27B) e inclui o construtor dinâmico `AtlasConfig.from_qwen_config(cfg)` eliminando divergências de fonte única.
+2. **Equivalência Numérica Estrita do Reference**: O teste `tests/reference_equivalence/test_qwen_official_equivalence.py` valida formalmente a desquantização de blocos de 128 e o causal stream contra a composição modular das camadas oficiais do Transformers com tolerância explícita $(\text{atol} \le 10^{-4})$, sem afirmações circulares.
+3. **Benchmarks End-to-End das 64 Camadas**:
+   - `tests/end_to_end/test_64layer_atlas_linear_stabilized_ppl.py`: Valida o SVD-64 linear (PPL $2204 \to 324.27$, Top-1 $7.34\% \to 18.15\%$, $-85.29\%$ de PPL).
+   - `tests/end_to_end/test_64layer_atlas_nonlinear_stabilized_ppl.py`: Valida a comparação quadripartida (Professor vs Atlas Raw vs SVD-64 vs GELU-64).
+4. **Garantia Estrutural de Congelamento**: `atlas/residual.py` implementa `freeze_backbone_and_isolate_stabilizer()` e métodos `.freeze()` / `.unfreeze()`, garantindo `requires_grad=False` em todos os pesos de backbone.
+5. **Cache de Bases no AtlasStreamModel**: `AtlasStreamModel.precompute_and_cache_chart_bases()` elimina o recalculo de decomposições espectrais (`torch.linalg.eigh`) durante inferência contínua.

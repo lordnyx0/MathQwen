@@ -45,3 +45,41 @@ Avaliação em 1.024 tokens de teste não-visto do WikiText-2:
 1. **O poder da não-linearidade residual**: Em todas as 8 camadas, a introdução de $\text{GELU}$ reduziu o erro geométrico da variedade residual $e_h$ e elevou a concordância de predição (Top-1 Agreement) com o professor.
 2. **Descolamento entre Hidden State e Logits em $L_{50}\text{--}L_{55}$**: Na região de maior distorção, corretores focados apenas em diminuir distância euclidiana em $h$ podem induzir rotações nos logits terminais que aumentam o NLL. O critério de rollback lexicográfico garantiu que nenhum corretor fosse aceito às custas da degradação da probabilidade dos tokens.
 3. **Ganhos Firmes em Logits e PPL**: Em $L_0$, $L_{32}$, $L_{48}$ e especialmente na saída $L_{63}$, a não-linearidade aliada à destilação com temperatura $T=2$ reduziu o NLL e a divergência KL de forma consistente e generalizável.
+
+---
+
+## 5. Benchmark End-to-End das 64 Camadas e Distinção Metodológica
+
+### 5.1 Distinção Metodológica: Calibração Sequencial Gulosa vs Otimização Conjunta Global
+O benchmark end-to-end implementado nos testes canônicos adota a seguinte formulação:
+
+1. **Estabilização Sequencial Gulosa Autoregressiva (Local Condicionada)**:
+   - Para cada camada $l \in \{0, \dots, 63\}$, o corretor residual $W_l$ (linear SVD ou não-linear GELU) é ajustado sobre a trajetória:
+     $$h_{l}^{S} \to \text{fit}(W_l) \to h_{l}^{S'}$$
+     onde o estado de entrada $h_{l}^{S}$ já incorpora as correções acumuladas de todas as camadas anteriores $0, \dots, l-1$.
+   - Este processo responde à pergunta experimental: *"Qual é a melhor correção local condicionada ao estabilizador já aplicado anteriormente?"*
+   - Vantagens: Estabilidade numérica estrita, ausência de risco de explosão de gradientes e viabilidade em hardware acessível (GPU de 12GB de VRAM), sem exigir BPTT ao longo de 64 camadas.
+
+2. **Otimização Conjunta Global (Distinção Formal)**:
+   - A otimização conjunta busca o conjunto global $\{W_l\}_{l=0}^{63}$ que minimiza a perda terminal de NLL simultaneamente.
+   - Os testes atuais documentam com clareza que o pipeline opera via estabilização sequencial gulosa autoregressiva, garantindo transparência metodológica.
+
+### 5.2 Resultados End-to-End no Conjunto Cego de Teste (WikiText-2, 1.024 tokens não-vistos)
+
+Avaliando a rede inteira em streaming causal pelas 64 camadas completas:
+
+| Configuração | NLL Terminal | PPL Terminal | Top-1 Accuracy | Variação de PPL |
+| :--- | :---: | :---: | :---: | :---: |
+| **Professor Oficial FP8 (Ref)** | **1.9892** | **7.31** | **53.87%** | Referência |
+| **Atlas Assimétrico Raw ($r=2048$)** | 7.6983 | 2204.61 | 7.34% | Baseline Zero-Shot |
+| **Atlas + SVD-64 (Linear 64 Camadas)** | **5.7816** | **324.27** | **18.15%** | **-85.29%** |
+| **Atlas + GELU-64 (Não-Linear 64 Camadas)** | 6.4619 | 640.29 | 16.17% | **-70.96%** |
+
+### 5.3 Análise e Interpretação dos Resultados End-to-End
+1. **Confirmação do Impacto do Estabilizador Residual**: Tanto o linear (SVD-64) quanto o não-linear (GELU-64) rompem a divergência do Atlas Raw, reduzindo a PPL de 2204 para 324 e 640 respectivamente, multiplicando a Top-1 Accuracy por mais de 2,4x.
+2. **Por que o SVD-64 linear superou o GELU puro nas 64 camadas uniformes?**
+   O experimento confirma rigorosamente o diagnóstico da **Sondagem das 8 Camadas Críticas (Seção 3)**:
+   - Nas camadas profundas de alta distorção ($L_{16}, L_{50}, L_{51}, L_{55}$), a não-linearidade GELU livre introduz rotações angulares que aumentam o NLL quando não condicionada pelo critério lexicográfico de rollback.
+   - Quando a GELU é aplicada cegamente em todas as 64 camadas sem rollback por camada, a perturbação de escala angular acumula-se ao longo da rede.
+   - O SVD linear, por ser conservativo e puramente projetivo, atua com maior estabilidade em cascata uniforme.
+   - Isso estabelece a necessidade do **modelo híbrido com Rollback Lexicográfico**: GELU nas camadas receptivas ($L_0, L_{32}, L_{48}, L_{63}$) e SVD linear nas camadas de transição crítica.
