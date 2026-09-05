@@ -1,0 +1,192 @@
+﻿{
+  "architecture": "G-Qwen-9B-Phase1",
+  "rank_mixer": 2560,
+  "rank_ffn": 1792,
+  "residual_quantization": "4-bit uniform block 128",
+  "charts": {
+    "chart_0": {
+      "layers": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_0.safetensors",
+      "size_mb": 997.3175506591797,
+      "extraction_time_s": 26.92967987060547
+    },
+    "chart_1": {
+      "layers": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_1.safetensors",
+      "size_mb": 997.3175506591797,
+      "extraction_time_s": 26.425859689712524
+    },
+    "chart_2": {
+      "layers": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_2.safetensors",
+      "size_mb": 997.3175735473633,
+      "extraction_time_s": 25.967689275741577
+    },
+    "chart_3": {
+      "layers": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_3.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 26.117763996124268
+    },
+    "chart_4": {
+      "layers": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_4.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 29.700759172439575
+    },
+    "chart_5": {
+      "layers": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_5.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.912639617919922
+    },
+    "chart_6": {
+      "layers": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_6.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 29.49784779548645
+    },
+    "chart_7": {
+      "layers": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_7.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.827871561050415
+    },
+    "chart_8": {
+      "layers": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_8.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.49383568763733
+    },
+    "chart_9": {
+      "layers": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_9.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.38414168357849
+    },
+    "chart_10": {
+      "layers": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_10.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 27.75366997718811
+    },
+    "chart_11": {
+      "layers": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_11.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 48.23407745361328
+    },
+    "chart_12": {
+      "layers": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_12.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 27.65454339981079
+    },
+    "chart_13": {
+      "layers": [
+        52,
+        53,
+        54,
+        55
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_13.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.279054880142212
+    },
+    "chart_14": {
+      "layers": [
+        56,
+        57,
+        58,
+        59
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_14.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.520708560943604
+    },
+    "chart_15": {
+      "layers": [
+        60,
+        61,
+        62,
+        63
+      ],
+      "filepath": "C:\\Users\\Nyx\\Desktop\\MathQwen\\models\\g_qwen_9b_phase1\\chart_15.safetensors",
+      "size_mb": 997.3175964355469,
+      "extraction_time_s": 28.76432204246521
+    }
+  },
+  "summary_metrics": {
+    "mean_mixer_err_pct": 7.3491227347403765,
+    "mean_gate_err_pct": 9.780036751180887,
+    "mean_up_err_pct": 9.99697376973927,
+    "mean_down_err_pct": 10.056931991130114,
+    "overall_mean_frob_err_pct": 9.295766311697662,
+    "total_extraction_time_s": 105.44131851196289
+  }
+}

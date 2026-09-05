@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minecraft Three.js Clone - G-Qwen 9B</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #87CEEB; }
+        #crosshair { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; transform: translate(-50%, -50%); color: white; font-size: 24px; user-select: none; pointer-events: none; }
+        #ui { position: absolute; top: 10px; left: 10px; color: #fff; background: rgba(0,0,0,0.6); padding: 12px; font-family: sans-serif; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div id="crosshair">+</div>
+    <div id="ui"><b>G-Qwen 9B Minecraft Clone</b><br>WASD: Mover | Espaco: Pular | Clique: Quebrar/Criar Bloco</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Setup Three.js Scene, Camera, and Voxel World
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Luz e Terreno Voxel
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
