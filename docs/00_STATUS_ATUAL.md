@@ -60,6 +60,14 @@ O projeto MathQwen passou por uma bifurcação metodológica e científica funda
    - **Sweet Spot Analítico**: Fixado rigorosamente em **$r^* \in [32, 64]$** através de retorno marginal por bit ($R_{bits}(r)$) e estabilidade por bootstrap (overlap $>81\%$ vs $53\%$ em $r=256$).
    - **Generalização Out-of-Domain**: Refinador analítico em forma fechada transfere com $>82{,}5\%$ a $86{,}6\%$ de retenção funcional sem qualquer retreinamento.
 
+
+6. **Common + Specific Error Manifold e Decomposição Canônica em Dois Níveis (Doc 15)**:
+   - **Confirmação do Cenário A**: Provado que o erro funcional do Atlas admite decomposição $C_e = C_{\rm common}(32) + C_{\rm specific}^{(e)}(16)$.
+   - **Estabilidade Superior**: O núcleo comum $U_c$ é estatisticamente mais estável que os subespaços individuais sob bootstrap ($98{,}09\% \pm 0{,}82\%$ vs $96{,}32\%$ em WikiText para $r=16$).
+   - **Grid $(r_c, r_s)$**: Atinge **$94{,}16\%$** de retenção média com $(16, 16)$ e **$95{,}16\%$** com $(32, 16)$, reduzindo o pior resíduo não explicado para $<8{,}98\%$.
+   - **Invariância de Domínio**: Demonstração de que $U_c$ extraído sem rótulos de domínio ($E_{pool}$ embaralhado) possui idêntica taxa de retenção.
+   - **Sensibilidade Funcional**: Integração do Gramiano da Jacobiana $G_J = \mathbb{E}[J^T J]$ revela alinhamento natural de $\approx 85\%$ com a geometria euclidiana, fundamentando a arquitetura híbrida de refinamento.
+
 ## 4. Conformidade e Validação Arquitetural Pós-Auditoria (Commit ec26534+)
 
 Em conformidade com a auditoria rigorosa do repositório:

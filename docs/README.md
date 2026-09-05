@@ -68,3 +68,4 @@
 * **Consumo de VRAM em Inferência**: **4.05 GB** (com margem de 7.95 GB livres na RTX 3060).
 
 - [14_UNIVERSAL_ERROR_MANIFOLD.md](14_UNIVERSAL_ERROR_MANIFOLD.md): Prova geométrica e validação funcional da hipótese do Universal Error Manifold (UEM) em L63, separação Média vs Minimax no Grassmanniano, projeção cruzada, bootstrap e derivação analítica do sweet spot r*=32-64.
+- [15_COMMON_SPECIFIC_ERROR_MANIFOLD.md](15_COMMON_SPECIFIC_ERROR_MANIFOLD.md): Prova da decomposição canônica de dois níveis Ce = Ccommon + Cspecific em L63, comparação de métodos de extração, grid (rc, rs), bootstrap no Grassmanniano e análise funcional ponderada pela Jacobiana.

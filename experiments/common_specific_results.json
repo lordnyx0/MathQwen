@@ -1,0 +1,1066 @@
+{
+  "domains": [
+    "WikiText",
+    "HF_Code",
+    "GSM8K"
+  ],
+  "traces": {
+    "WikiText": 38609.265625,
+    "HF_Code": 39163.28125,
+    "GSM8K": 38042.2265625
+  },
+  "rc_list": [
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "rs_list": [
+    4,
+    8,
+    16,
+    32,
+    64,
+    128
+  ],
+  "method_comparison": [
+    {
+      "rank": 4,
+      "method": "PCA_Avg",
+      "domain_retentions": {
+        "WikiText": 70.91269167181724,
+        "HF_Code": 90.84326930557577,
+        "GSM8K": 86.46799051716914
+      },
+      "worst_retention": 70.91269167181724,
+      "mean_retention": 82.74131716485405
+    },
+    {
+      "rank": 4,
+      "method": "Grassmann_Align",
+      "domain_retentions": {
+        "WikiText": 69.13441670527276,
+        "HF_Code": 91.06994312707339,
+        "GSM8K": 86.40432806126054
+      },
+      "worst_retention": 69.13441670527276,
+      "mean_retention": 82.20289596453556
+    },
+    {
+      "rank": 4,
+      "method": "Minimax",
+      "domain_retentions": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "worst_retention": 72.11861837145767,
+      "mean_retention": 81.73183849952524
+    },
+    {
+      "rank": 8,
+      "method": "PCA_Avg",
+      "domain_retentions": {
+        "WikiText": 78.22931202971424,
+        "HF_Code": 93.44318592120776,
+        "GSM8K": 89.55186149021077
+      },
+      "worst_retention": 78.22931202971424,
+      "mean_retention": 87.07478648037757
+    },
+    {
+      "rank": 8,
+      "method": "Grassmann_Align",
+      "domain_retentions": {
+        "WikiText": 75.25145899688356,
+        "HF_Code": 93.36367154538364,
+        "GSM8K": 89.02223092960328
+      },
+      "worst_retention": 75.25145899688356,
+      "mean_retention": 85.87912049062349
+    },
+    {
+      "rank": 8,
+      "method": "Minimax",
+      "domain_retentions": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "worst_retention": 78.68364653763749,
+      "mean_retention": 86.8060973250984
+    },
+    {
+      "rank": 16,
+      "method": "PCA_Avg",
+      "domain_retentions": {
+        "WikiText": 84.26673082411736,
+        "HF_Code": 95.68493874839665,
+        "GSM8K": 92.45473599384898
+      },
+      "worst_retention": 84.26673082411736,
+      "mean_retention": 90.80213518878766
+    },
+    {
+      "rank": 16,
+      "method": "Grassmann_Align",
+      "domain_retentions": {
+        "WikiText": 80.79640089651808,
+        "HF_Code": 95.02610249893775,
+        "GSM8K": 91.88395073593799
+      },
+      "worst_retention": 80.79640089651808,
+      "mean_retention": 89.2354847104646
+    },
+    {
+      "rank": 16,
+      "method": "Minimax",
+      "domain_retentions": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "worst_retention": 84.4402736255917,
+      "mean_retention": 90.75528116580209
+    },
+    {
+      "rank": 32,
+      "method": "PCA_Avg",
+      "domain_retentions": {
+        "WikiText": 88.61469987354332,
+        "HF_Code": 97.13913818864417,
+        "GSM8K": 94.7706939947
+      },
+      "worst_retention": 88.61469987354332,
+      "mean_retention": 93.50817735229582
+    },
+    {
+      "rank": 32,
+      "method": "Grassmann_Align",
+      "domain_retentions": {
+        "WikiText": 83.84981531294412,
+        "HF_Code": 96.74690251010885,
+        "GSM8K": 94.122548584722
+      },
+      "worst_retention": 83.84981531294412,
+      "mean_retention": 91.57308880259166
+    },
+    {
+      "rank": 32,
+      "method": "Minimax",
+      "domain_retentions": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "worst_retention": 88.6754747588961,
+      "mean_retention": 93.49381442421391
+    },
+    {
+      "rank": 64,
+      "method": "PCA_Avg",
+      "domain_retentions": {
+        "WikiText": 91.87452834206982,
+        "HF_Code": 98.17785207453525,
+        "GSM8K": 96.4461974209723
+      },
+      "worst_retention": 91.87452834206982,
+      "mean_retention": 95.49952594585913
+    },
+    {
+      "rank": 64,
+      "method": "Grassmann_Align",
+      "domain_retentions": {
+        "WikiText": 87.08093075922471,
+        "HF_Code": 97.72514278076893,
+        "GSM8K": 95.65329180076854
+      },
+      "worst_retention": 87.08093075922471,
+      "mean_retention": 93.4864551135874
+    },
+    {
+      "rank": 64,
+      "method": "Minimax",
+      "domain_retentions": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "worst_retention": 91.896361570402,
+      "mean_retention": 95.4947091390768
+    }
+  ],
+  "grid_results": [
+    {
+      "r_c": 4,
+      "r_s": 4,
+      "total_rank": 8,
+      "common_retention": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "specific_retention": {
+        "WikiText": 7.4529357598231565,
+        "HF_Code": 5.706344642753838,
+        "GSM8K": 6.2218601676745875
+      },
+      "total_retention": {
+        "WikiText": 79.57155413128083,
+        "HF_Code": 94.40143912841393,
+        "GSM8K": 90.60366280913257
+      },
+      "unexplained_error": {
+        "WikiText": 20.428445868719166,
+        "HF_Code": 5.5985608715860735,
+        "GSM8K": 9.396337190867428
+      },
+      "worst_unexplained": 20.428445868719166,
+      "mean_unexplained": 11.807781310390888,
+      "worst_total_retention": 79.57155413128083,
+      "mean_total_retention": 88.1922186896091
+    },
+    {
+      "r_c": 4,
+      "r_s": 8,
+      "total_rank": 12,
+      "common_retention": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "specific_retention": {
+        "WikiText": 11.241504845651317,
+        "HF_Code": 7.159976799995213,
+        "GSM8K": 8.084404146109854
+      },
+      "total_retention": {
+        "WikiText": 83.36012321710899,
+        "HF_Code": 95.85507128565528,
+        "GSM8K": 92.46620678756783
+      },
+      "unexplained_error": {
+        "WikiText": 16.639876782891008,
+        "HF_Code": 4.144928714344715,
+        "GSM8K": 7.5337932124321725
+      },
+      "worst_unexplained": 16.639876782891008,
+      "mean_unexplained": 9.439532903222632,
+      "worst_total_retention": 83.36012321710899,
+      "mean_total_retention": 90.56046709677737
+    },
+    {
+      "r_c": 4,
+      "r_s": 16,
+      "total_rank": 20,
+      "common_retention": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "specific_retention": {
+        "WikiText": 14.96248691195088,
+        "HF_Code": 8.558341254515822,
+        "GSM8K": 10.09253491988388
+      },
+      "total_retention": {
+        "WikiText": 87.08110528340856,
+        "HF_Code": 97.2534357401759,
+        "GSM8K": 94.47433756134186
+      },
+      "unexplained_error": {
+        "WikiText": 12.918894716591439,
+        "HF_Code": 2.7465642598240976,
+        "GSM8K": 5.525662438658145
+      },
+      "worst_unexplained": 12.918894716591439,
+      "mean_unexplained": 7.063707138357894,
+      "worst_total_retention": 87.08110528340856,
+      "mean_total_retention": 92.93629286164212
+    },
+    {
+      "r_c": 4,
+      "r_s": 32,
+      "total_rank": 36,
+      "common_retention": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "specific_retention": {
+        "WikiText": 18.22270995689303,
+        "HF_Code": 9.674475556211636,
+        "GSM8K": 11.850667336559994
+      },
+      "total_retention": {
+        "WikiText": 90.34132832835071,
+        "HF_Code": 98.36957004187173,
+        "GSM8K": 96.23246997801796
+      },
+      "unexplained_error": {
+        "WikiText": 9.658671671649287,
+        "HF_Code": 1.6304299581282748,
+        "GSM8K": 3.76753002198204
+      },
+      "worst_unexplained": 9.658671671649287,
+      "mean_unexplained": 5.018877217253201,
+      "worst_total_retention": 90.34132832835071,
+      "mean_total_retention": 94.9811227827468
+    },
+    {
+      "r_c": 4,
+      "r_s": 64,
+      "total_rank": 68,
+      "common_retention": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "specific_retention": {
+        "WikiText": 21.051545894751094,
+        "HF_Code": 10.438127003568772,
+        "GSM8K": 13.242301668859941
+      },
+      "total_retention": {
+        "WikiText": 93.17016426620877,
+        "HF_Code": 99.13322148922884,
+        "GSM8K": 97.62410431031792
+      },
+      "unexplained_error": {
+        "WikiText": 6.829835733791228,
+        "HF_Code": 0.8667785107711552,
+        "GSM8K": 2.375895689682082
+      },
+      "worst_unexplained": 6.829835733791228,
+      "mean_unexplained": 3.357503311414822,
+      "worst_total_retention": 93.17016426620877,
+      "mean_total_retention": 96.64249668858518
+    },
+    {
+      "r_c": 4,
+      "r_s": 128,
+      "total_rank": 132,
+      "common_retention": {
+        "WikiText": 72.11861837145767,
+        "HF_Code": 88.69509448566009,
+        "GSM8K": 84.38180264145798
+      },
+      "specific_retention": {
+        "WikiText": 23.582706808375583,
+        "HF_Code": 10.921463345787792,
+        "GSM8K": 14.250573783554222
+      },
+      "total_retention": {
+        "WikiText": 95.70132517983326,
+        "HF_Code": 99.61655783144788,
+        "GSM8K": 98.6323764250122
+      },
+      "unexplained_error": {
+        "WikiText": 4.298674820166738,
+        "HF_Code": 0.3834421685521221,
+        "GSM8K": 1.3676235749878032
+      },
+      "worst_unexplained": 4.298674820166738,
+      "mean_unexplained": 2.016580187902221,
+      "worst_total_retention": 95.70132517983326,
+      "mean_total_retention": 97.98341981209778
+    },
+    {
+      "r_c": 8,
+      "r_s": 4,
+      "total_rank": 12,
+      "common_retention": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "specific_retention": {
+        "WikiText": 4.161883586906012,
+        "HF_Code": 2.518920914265709,
+        "GSM8K": 2.983143105807823
+      },
+      "total_retention": {
+        "WikiText": 82.8455301245435,
+        "HF_Code": 95.25785802290278,
+        "GSM8K": 91.97885143482853
+      },
+      "unexplained_error": {
+        "WikiText": 17.1544698754565,
+        "HF_Code": 4.742141977097219,
+        "GSM8K": 8.021148565171472
+      },
+      "worst_unexplained": 17.1544698754565,
+      "mean_unexplained": 9.972586805908398,
+      "worst_total_retention": 82.8455301245435,
+      "mean_total_retention": 90.02741319409161
+    },
+    {
+      "r_c": 8,
+      "r_s": 8,
+      "total_rank": 16,
+      "common_retention": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "specific_retention": {
+        "WikiText": 6.488300758689508,
+        "HF_Code": 3.5928283209619924,
+        "GSM8K": 4.335554755154194
+      },
+      "total_retention": {
+        "WikiText": 85.17194729632699,
+        "HF_Code": 96.33176542959906,
+        "GSM8K": 93.3312630841749
+      },
+      "unexplained_error": {
+        "WikiText": 14.82805270367301,
+        "HF_Code": 3.6682345704009407,
+        "GSM8K": 6.668736915825093
+      },
+      "worst_unexplained": 14.82805270367301,
+      "mean_unexplained": 8.388341396633015,
+      "worst_total_retention": 85.17194729632699,
+      "mean_total_retention": 91.61165860336699
+    },
+    {
+      "r_c": 8,
+      "r_s": 16,
+      "total_rank": 24,
+      "common_retention": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "specific_retention": {
+        "WikiText": 9.217679411113924,
+        "HF_Code": 4.702930721155093,
+        "GSM8K": 5.854550900392489
+      },
+      "total_retention": {
+        "WikiText": 87.9013259487514,
+        "HF_Code": 97.44186782979216,
+        "GSM8K": 94.8502592294132
+      },
+      "unexplained_error": {
+        "WikiText": 12.098674051248594,
+        "HF_Code": 2.5581321702078412,
+        "GSM8K": 5.149740770586803
+      },
+      "worst_unexplained": 12.098674051248594,
+      "mean_unexplained": 6.602182330681079,
+      "worst_total_retention": 87.9013259487514,
+      "mean_total_retention": 93.39781766931891
+    },
+    {
+      "r_c": 8,
+      "r_s": 32,
+      "total_rank": 40,
+      "common_retention": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "specific_retention": {
+        "WikiText": 12.001732190464667,
+        "HF_Code": 5.680018347553227,
+        "GSM8K": 7.369728902672837
+      },
+      "total_retention": {
+        "WikiText": 90.68537872810215,
+        "HF_Code": 98.41895545619029,
+        "GSM8K": 96.36543723169355
+      },
+      "unexplained_error": {
+        "WikiText": 9.314621271897849,
+        "HF_Code": 1.5810445438097105,
+        "GSM8K": 3.634562768306452
+      },
+      "worst_unexplained": 9.314621271897849,
+      "mean_unexplained": 4.8434095280046705,
+      "worst_total_retention": 90.68537872810215,
+      "mean_total_retention": 95.15659047199533
+    },
+    {
+      "r_c": 8,
+      "r_s": 64,
+      "total_rank": 72,
+      "common_retention": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "specific_retention": {
+        "WikiText": 14.63163711677145,
+        "HF_Code": 6.407300720337209,
+        "GSM8K": 8.667210184883986
+      },
+      "total_retention": {
+        "WikiText": 93.31528365440893,
+        "HF_Code": 99.14623782897426,
+        "GSM8K": 97.6629185139047
+      },
+      "unexplained_error": {
+        "WikiText": 6.68471634559107,
+        "HF_Code": 0.8537621710257355,
+        "GSM8K": 2.3370814860953004
+      },
+      "worst_unexplained": 6.68471634559107,
+      "mean_unexplained": 3.2918533342373686,
+      "worst_total_retention": 93.31528365440893,
+      "mean_total_retention": 96.70814666576263
+    },
+    {
+      "r_c": 8,
+      "r_s": 128,
+      "total_rank": 136,
+      "common_retention": {
+        "WikiText": 78.68364653763749,
+        "HF_Code": 92.73893710863706,
+        "GSM8K": 88.99570832902072
+      },
+      "specific_retention": {
+        "WikiText": 17.07769725608525,
+        "HF_Code": 6.880747636611723,
+        "GSM8K": 9.649332560758626
+      },
+      "total_retention": {
+        "WikiText": 95.76134379372273,
+        "HF_Code": 99.61968474524878,
+        "GSM8K": 98.64504088977935
+      },
+      "unexplained_error": {
+        "WikiText": 4.23865620627727,
+        "HF_Code": 0.3803152547512241,
+        "GSM8K": 1.3549591102206477
+      },
+      "worst_unexplained": 4.23865620627727,
+      "mean_unexplained": 1.9913101904163806,
+      "worst_total_retention": 95.76134379372273,
+      "mean_total_retention": 98.00868980958363
+    },
+    {
+      "r_c": 16,
+      "r_s": 4,
+      "total_rank": 20,
+      "common_retention": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "specific_retention": {
+        "WikiText": 1.8401268747817816,
+        "HF_Code": 0.8845067281011304,
+        "GSM8K": 1.2203521632502516
+      },
+      "total_retention": {
+        "WikiText": 86.28040050037347,
+        "HF_Code": 96.42005180852316,
+        "GSM8K": 93.51037695464277
+      },
+      "unexplained_error": {
+        "WikiText": 13.719599499626526,
+        "HF_Code": 3.579948191476845,
+        "GSM8K": 6.489623045357234
+      },
+      "worst_unexplained": 13.719599499626526,
+      "mean_unexplained": 7.929723578820202,
+      "worst_total_retention": 86.28040050037347,
+      "mean_total_retention": 92.0702764211798
+    },
+    {
+      "r_c": 16,
+      "r_s": 8,
+      "total_rank": 24,
+      "common_retention": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "specific_retention": {
+        "WikiText": 3.0702253319677615,
+        "HF_Code": 1.466141526761794,
+        "GSM8K": 2.07676044146422
+      },
+      "total_retention": {
+        "WikiText": 87.51049895755946,
+        "HF_Code": 97.00168660718383,
+        "GSM8K": 94.36678523285673
+      },
+      "unexplained_error": {
+        "WikiText": 12.489501042440537,
+        "HF_Code": 2.998313392816172,
+        "GSM8K": 5.633214767143272
+      },
+      "worst_unexplained": 12.489501042440537,
+      "mean_unexplained": 7.040343067466661,
+      "worst_total_retention": 87.51049895755946,
+      "mean_total_retention": 92.95965693253333
+    },
+    {
+      "r_c": 16,
+      "r_s": 16,
+      "total_rank": 32,
+      "common_retention": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "specific_retention": {
+        "WikiText": 4.8217607906785265,
+        "HF_Code": 2.228705785588468,
+        "GSM8K": 3.1530422850139397
+      },
+      "total_retention": {
+        "WikiText": 89.26203441627023,
+        "HF_Code": 97.7642508660105,
+        "GSM8K": 95.44306707640645
+      },
+      "unexplained_error": {
+        "WikiText": 10.737965583729775,
+        "HF_Code": 2.2357491339895006,
+        "GSM8K": 4.55693292359355
+      },
+      "worst_unexplained": 10.737965583729775,
+      "mean_unexplained": 5.843549213770942,
+      "worst_total_retention": 89.26203441627023,
+      "mean_total_retention": 94.15645078622906
+    },
+    {
+      "r_c": 16,
+      "r_s": 32,
+      "total_rank": 48,
+      "common_retention": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "specific_retention": {
+        "WikiText": 6.927999263862052,
+        "HF_Code": 2.9846255084351863,
+        "GSM8K": 4.340626252712842
+      },
+      "total_retention": {
+        "WikiText": 91.36827288945375,
+        "HF_Code": 98.52017058885721,
+        "GSM8K": 96.63065104410535
+      },
+      "unexplained_error": {
+        "WikiText": 8.631727110546251,
+        "HF_Code": 1.4798294111427879,
+        "GSM8K": 3.369348955894651
+      },
+      "worst_unexplained": 8.631727110546251,
+      "mean_unexplained": 4.493635159194564,
+      "worst_total_retention": 91.36827288945375,
+      "mean_total_retention": 95.50636484080543
+    },
+    {
+      "r_c": 16,
+      "r_s": 64,
+      "total_rank": 80,
+      "common_retention": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "specific_retention": {
+        "WikiText": 9.193650719135753,
+        "HF_Code": 3.6382720534697275,
+        "GSM8K": 5.464585628262188
+      },
+      "total_retention": {
+        "WikiText": 93.63392434472745,
+        "HF_Code": 99.17381713389175,
+        "GSM8K": 97.7546104196547
+      },
+      "unexplained_error": {
+        "WikiText": 6.366075655272553,
+        "HF_Code": 0.8261828661082546,
+        "GSM8K": 2.2453895803453037
+      },
+      "worst_unexplained": 6.366075655272553,
+      "mean_unexplained": 3.1458827005753704,
+      "worst_total_retention": 93.63392434472745,
+      "mean_total_retention": 96.85411729942463
+    },
+    {
+      "r_c": 16,
+      "r_s": 128,
+      "total_rank": 144,
+      "common_retention": {
+        "WikiText": 84.4402736255917,
+        "HF_Code": 95.53554508042203,
+        "GSM8K": 92.29002479139251
+      },
+      "specific_retention": {
+        "WikiText": 11.460917155443987,
+        "HF_Code": 4.091320158569938,
+        "GSM8K": 6.3831880186436525
+      },
+      "total_retention": {
+        "WikiText": 95.90119078103568,
+        "HF_Code": 99.62686523899197,
+        "GSM8K": 98.67321281003616
+      },
+      "unexplained_error": {
+        "WikiText": 4.09880921896432,
+        "HF_Code": 0.373134761008032,
+        "GSM8K": 1.326787189963838
+      },
+      "worst_unexplained": 4.09880921896432,
+      "mean_unexplained": 1.9329103899787299,
+      "worst_total_retention": 95.90119078103568,
+      "mean_total_retention": 98.06708961002126
+    },
+    {
+      "r_c": 32,
+      "r_s": 4,
+      "total_rank": 36,
+      "common_retention": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "specific_retention": {
+        "WikiText": 0.7442923699443253,
+        "HF_Code": 0.4093866386524448,
+        "GSM8K": 0.5494184659268267
+      },
+      "total_retention": {
+        "WikiText": 89.41976712884043,
+        "HF_Code": 97.49038517643375,
+        "GSM8K": 95.27438844189116
+      },
+      "unexplained_error": {
+        "WikiText": 10.580232871159566,
+        "HF_Code": 2.5096148235662525,
+        "GSM8K": 4.725611558108838
+      },
+      "worst_unexplained": 10.580232871159566,
+      "mean_unexplained": 5.938486417611553,
+      "worst_total_retention": 89.41976712884043,
+      "mean_total_retention": 94.06151358238844
+    },
+    {
+      "r_c": 32,
+      "r_s": 8,
+      "total_rank": 40,
+      "common_retention": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "specific_retention": {
+        "WikiText": 1.369780247241582,
+        "HF_Code": 0.6981502085606621,
+        "GSM8K": 0.9527378526900058
+      },
+      "total_retention": {
+        "WikiText": 90.0452550061377,
+        "HF_Code": 97.77914874634196,
+        "GSM8K": 95.67770782865435
+      },
+      "unexplained_error": {
+        "WikiText": 9.954744993862306,
+        "HF_Code": 2.22085125365804,
+        "GSM8K": 4.3222921713456515
+      },
+      "worst_unexplained": 9.954744993862306,
+      "mean_unexplained": 5.4992961396219995,
+      "worst_total_retention": 90.0452550061377,
+      "mean_total_retention": 94.50070386037801
+    },
+    {
+      "r_c": 32,
+      "r_s": 16,
+      "total_rank": 48,
+      "common_retention": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "specific_retention": {
+        "WikiText": 2.341851180041475,
+        "HF_Code": 1.1156016946426541,
+        "GSM8K": 1.5547578239104682
+      },
+      "total_retention": {
+        "WikiText": 91.01732593893757,
+        "HF_Code": 98.19660023242395,
+        "GSM8K": 96.27972779987482
+      },
+      "unexplained_error": {
+        "WikiText": 8.982674061062426,
+        "HF_Code": 1.8033997675760531,
+        "GSM8K": 3.72027220012518
+      },
+      "worst_unexplained": 8.982674061062426,
+      "mean_unexplained": 4.835448676254553,
+      "worst_total_retention": 91.01732593893757,
+      "mean_total_retention": 95.16455132374544
+    },
+    {
+      "r_c": 32,
+      "r_s": 32,
+      "total_rank": 64,
+      "common_retention": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "specific_retention": {
+        "WikiText": 3.7484693090875902,
+        "HF_Code": 1.6246575418467843,
+        "GSM8K": 2.350951494445348
+      },
+      "total_retention": {
+        "WikiText": 92.4239440679837,
+        "HF_Code": 98.70565607962808,
+        "GSM8K": 97.07592147040968
+      },
+      "unexplained_error": {
+        "WikiText": 7.576055932016303,
+        "HF_Code": 1.2943439203719151,
+        "GSM8K": 2.924078529590318
+      },
+      "worst_unexplained": 7.576055932016303,
+      "mean_unexplained": 3.9314927939928452,
+      "worst_total_retention": 92.4239440679837,
+      "mean_total_retention": 96.06850720600715
+    },
+    {
+      "r_c": 32,
+      "r_s": 64,
+      "total_rank": 96,
+      "common_retention": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "specific_retention": {
+        "WikiText": 5.517828682407163,
+        "HF_Code": 2.1521810223761353,
+        "GSM8K": 3.215966076741599
+      },
+      "total_retention": {
+        "WikiText": 94.19330344130327,
+        "HF_Code": 99.23317956015744,
+        "GSM8K": 97.94093605270594
+      },
+      "unexplained_error": {
+        "WikiText": 5.8066965586967285,
+        "HF_Code": 0.7668204398425615,
+        "GSM8K": 2.0590639472940637
+      },
+      "worst_unexplained": 5.8066965586967285,
+      "mean_unexplained": 2.877526981944451,
+      "worst_total_retention": 94.19330344130327,
+      "mean_total_retention": 97.12247301805554
+    },
+    {
+      "r_c": 32,
+      "r_s": 128,
+      "total_rank": 160,
+      "common_retention": {
+        "WikiText": 88.6754747588961,
+        "HF_Code": 97.0809985377813,
+        "GSM8K": 94.72496997596434
+      },
+      "specific_retention": {
+        "WikiText": 7.485401052021663,
+        "HF_Code": 2.5610820418398026,
+        "GSM8K": 4.008057305246279
+      },
+      "total_retention": {
+        "WikiText": 96.16087581091777,
+        "HF_Code": 99.6420805796211,
+        "GSM8K": 98.73302728121061
+      },
+      "unexplained_error": {
+        "WikiText": 3.839124189082227,
+        "HF_Code": 0.3579194203789058,
+        "GSM8K": 1.2669727187893898
+      },
+      "worst_unexplained": 3.839124189082227,
+      "mean_unexplained": 1.8213387760835076,
+      "worst_total_retention": 96.16087581091777,
+      "mean_total_retention": 98.17866122391649
+    },
+    {
+      "r_c": 64,
+      "r_s": 4,
+      "total_rank": 68,
+      "common_retention": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "specific_retention": {
+        "WikiText": 0.3395516595125241,
+        "HF_Code": 0.1590566677384783,
+        "GSM8K": 0.23840121714914594
+      },
+      "total_retention": {
+        "WikiText": 92.23591322991452,
+        "HF_Code": 98.31865594401003,
+        "GSM8K": 96.66656778770604
+      },
+      "unexplained_error": {
+        "WikiText": 7.764086770085484,
+        "HF_Code": 1.6813440559899675,
+        "GSM8K": 3.333432212293957
+      },
+      "worst_unexplained": 7.764086770085484,
+      "mean_unexplained": 4.259621012789803,
+      "worst_total_retention": 92.23591322991452,
+      "mean_total_retention": 95.74037898721019
+    },
+    {
+      "r_c": 64,
+      "r_s": 8,
+      "total_rank": 72,
+      "common_retention": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "specific_retention": {
+        "WikiText": 0.6365827306094274,
+        "HF_Code": 0.2926362504687877,
+        "GSM8K": 0.4356049798261891
+      },
+      "total_retention": {
+        "WikiText": 92.53294430101143,
+        "HF_Code": 98.45223552674035,
+        "GSM8K": 96.86377155038308
+      },
+      "unexplained_error": {
+        "WikiText": 7.467055698988574,
+        "HF_Code": 1.5477644732596474,
+        "GSM8K": 3.1362284496169224
+      },
+      "worst_unexplained": 7.467055698988574,
+      "mean_unexplained": 4.050349540621714,
+      "worst_total_retention": 92.53294430101143,
+      "mean_total_retention": 95.94965045937829
+    },
+    {
+      "r_c": 64,
+      "r_s": 16,
+      "total_rank": 80,
+      "common_retention": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "specific_retention": {
+        "WikiText": 1.1529639056418053,
+        "HF_Code": 0.506345668226965,
+        "GSM8K": 0.7567403555743257
+      },
+      "total_retention": {
+        "WikiText": 93.0493254760438,
+        "HF_Code": 98.66594494449853,
+        "GSM8K": 97.18490692613122
+      },
+      "unexplained_error": {
+        "WikiText": 6.950674523956195,
+        "HF_Code": 1.3340550555014659,
+        "GSM8K": 2.8150930738687805
+      },
+      "worst_unexplained": 6.950674523956195,
+      "mean_unexplained": 3.6999408844421473,
+      "worst_total_retention": 93.0493254760438,
+      "mean_total_retention": 96.30005911555786
+    },
+    {
+      "r_c": 64,
+      "r_s": 32,
+      "total_rank": 96,
+      "common_retention": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "specific_retention": {
+        "WikiText": 1.992786845925093,
+        "HF_Code": 0.8102645776771269,
+        "GSM8K": 1.221705632196938
+      },
+      "total_retention": {
+        "WikiText": 93.88914841632709,
+        "HF_Code": 98.9698638539487,
+        "GSM8K": 97.64987220275383
+      },
+      "unexplained_error": {
+        "WikiText": 6.110851583672911,
+        "HF_Code": 1.030136146051305,
+        "GSM8K": 2.3501277972461736
+      },
+      "worst_unexplained": 6.110851583672911,
+      "mean_unexplained": 3.1637051756567964,
+      "worst_total_retention": 93.88914841632709,
+      "mean_total_retention": 96.83629482434321
+    },
+    {
+      "r_c": 64,
+      "r_s": 64,
+      "total_rank": 128,
+      "common_retention": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "specific_retention": {
+        "WikiText": 3.207338423234197,
+        "HF_Code": 1.178268076878193,
+        "GSM8K": 1.8068561756792167
+      },
+      "total_retention": {
+        "WikiText": 95.1036999936362,
+        "HF_Code": 99.33786735314976,
+        "GSM8K": 98.23502274623611
+      },
+      "unexplained_error": {
+        "WikiText": 4.896300006363802,
+        "HF_Code": 0.6621326468502389,
+        "GSM8K": 1.7649772537638881
+      },
+      "worst_unexplained": 4.896300006363802,
+      "mean_unexplained": 2.44113663565931,
+      "worst_total_retention": 95.1036999936362,
+      "mean_total_retention": 97.5588633643407
+    },
+    {
+      "r_c": 64,
+      "r_s": 128,
+      "total_rank": 192,
+      "common_retention": {
+        "WikiText": 91.896361570402,
+        "HF_Code": 98.15959927627156,
+        "GSM8K": 96.4281665705569
+      },
+      "specific_retention": {
+        "WikiText": 4.739423632112329,
+        "HF_Code": 1.5102203514212247,
+        "GSM8K": 2.4167441076803207
+      },
+      "total_retention": {
+        "WikiText": 96.63578520251433,
+        "HF_Code": 99.66981962769279,
+        "GSM8K": 98.84491067823721
+      },
+      "unexplained_error": {
+        "WikiText": 3.3642147974856726,
+        "HF_Code": 0.3301803723072112,
+        "GSM8K": 1.1550893217627873
+      },
+      "worst_unexplained": 3.3642147974856726,
+      "mean_unexplained": 1.6164948305185571,
+      "worst_total_retention": 96.63578520251433,
+      "mean_total_retention": 98.38350516948145
+    }
+  ]
+}
