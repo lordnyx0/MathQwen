@@ -35,11 +35,18 @@ def project_layer_weights(orig_weights: dict, bases: dict):
     U_m = bases["U_mix"]
     U_d = bases["U_down"]
     V_j = bases["V_joint"]
+    device = U_m.device
+    dtype = U_m.dtype
 
-    W_mix_r = torch.matmul(U_m, torch.matmul(U_m.t(), orig_weights["mix"]))
-    W_gate_r = torch.matmul(torch.matmul(orig_weights["gate"], V_j), V_j.t())
-    W_up_r = torch.matmul(torch.matmul(orig_weights["up"], V_j), V_j.t())
-    W_down_r = torch.matmul(U_d, torch.matmul(U_d.t(), orig_weights["down"]))
+    w_mix = orig_weights["mix"].to(device=device, dtype=dtype)
+    w_gate = orig_weights["gate"].to(device=device, dtype=dtype)
+    w_up = orig_weights["up"].to(device=device, dtype=dtype)
+    w_down = orig_weights["down"].to(device=device, dtype=dtype)
+
+    W_mix_r = torch.matmul(U_m, torch.matmul(U_m.t(), w_mix))
+    W_gate_r = torch.matmul(torch.matmul(w_gate, V_j), V_j.t())
+    W_up_r = torch.matmul(torch.matmul(w_up, V_j), V_j.t())
+    W_down_r = torch.matmul(U_d, torch.matmul(U_d.t(), w_down))
 
     return {
         "mix": W_mix_r,
