@@ -1,68 +1,66 @@
-# Arquitetura $\mathcal{G}$-Qwen 9B v2 (Atlas Bipartido por Operador)
+﻿# MathQwen: Compressão e Estabilização Funcional do Qwen 27B
 
-> **Missão**: Representação analítica, matemática e funcional de **máxima fidelidade fidedigna** dos pesos do modelo **Qwen 3.8 27B** (64 camadas híbridas densas) dentro de um limite estrito de **9 Bilhões de Parâmetros (9B)**, fundamentada em **Geometria Diferencial, Variedades de Grassmann, Teoria de Foliações de Stiefel e Verificação Formal em Lean 4**.
-
----
-
-## Estrutura da Documentação Técnica e Provas Formais
-
-| Documento / Módulo | Descrição | Status |
-| :--- | :--- | :---: |
-| 📘 [**01. Fundamentação Matemática e Topológica**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/01_FUNDAMENTACAO_MATEMATICA_E_TOPOLOGICA.md) | Variedades de Grassmann $\mathrm{Gr}(k, d)$ e Stiefel $\mathrm{St}(k, d)$, Cadeia de Perturbação de Lipschitz e Teorema de Eckart-Young. | Homologado |
-| 📘 [**02. Especificação da Arquitetura 9B v2**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/02_ESPECIFICACAO_DA_ARQUITETURA_9B.md) | Especificação do Atlas Bipartido (16 cartas FFN + 16 DeltaNet + 4 Attention) e auditoria de **8.641B parâmetros** ($\le 9.00\text{B}$). | Homologado |
-| 📘 [**03. Álgebra de Projeção de Pesos (27B $\to$ 9B)**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/03_ALGEBRA_DE_PROJECAO_DE_PESOS_27B_PARA_9B.md) | Algoritmo exato de decomposição SVD por carta local, extração das bases $\mathbf{U}_g, \mathbf{V}_g$, coordenadas $\mathbf{S}_l$ e resíduos $\Delta_l$. | Homologado |
-| 📘 [**04. Protocolo de Destilação e Treinamento**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/04_PROTOCOLO_DE_DESTILACAO_E_TREINAMENTO.md) | Função de perda multiescala de Atlas, otimização Riemanniana em Stiefel e cronograma de fases de refinamento. | **Atualizado** |
-| 📘 [**05. Relatório de Clustering e Nova Hipótese**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/05_RELATORIO_EXPERIMENTO_CLUSTERING_E_NOVA_HIPOTESE.md) | Achados do experimento de clustering geodésico, explicação da trivialidade do teste sintético e formulação da Hipótese BOSH. | Homologado |
-| 📘 [**06. Hipótese do Feixe Topológico e Transição Lean**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/06_HIPOTESE_FEIXE_TOPOLOGICO_E_TRANSICAO_LEAN.md) | Teoria de feixes celulares e preservação da isotopia de transição de cartas provada no Lean 4. | Homologado |
-| 📘 [**07. Comparação Quádrupla de Pesos Reais**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/07_COMPARACAO_QUADRUPLA_PESOS_REAIS.md) | Comparativo empírico entre 27B denso, BPW2 quantizado, Loop Triplo e Atlas Bipartido $\mathcal{G}$-Qwen 9B. | Homologado |
-| 📘 [**08. Sweep de Posto e Análise Espectral 9B**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/08_SWEEP_POSTO_ANALISE_ESPECTRAL_9B.md) | Sweep paramétrico de postos de Stiefel ($r=1024 \dots 2560$) e curva de conservação de variância espectral. | Homologado |
-| 📘 [**09. Roteiro de Implementação de Fato e Estimativas**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/09_ROTEIRO_IMPLEMENTACAO_FASES_E_COMPUTE.md) | Roteiro prático em 4 fases, custos em GPU local/nuvem e arquitetura de desquantização on-demand. | **Atualizado** |
-| 📘 [**10. Relatório de Conclusão da Fase 2 e Validação Minecraft**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/10_RELATORIO_CONCLUSAO_FASE_2_E_VALIDACAO_MINECRAFT.md) | **Novo**: Conclusão da calibração Hessiana analítica (268s, 1.63 GB VRAM) e validação generativa Three.js. | **Novo** |
-| 📘 [**11. Fase 3: LoRA-Residual SVD e Inferência Alta Velocidade**](file:///C:/Users/Nyx/Desktop/MathQwen/docs/11_FASE_3_LORA_RESIDUAL_SVD_E_INFERENCIA_ALTA_VELOCIDADE.md) | **Concluído**: Fatoração analítica de resíduos (r=64), redução de 16.7GB para 7.5GB e destravamento de 35+ tk/s. | **Concluído** |
-| 📜 [**formal/GQwenBipartite.lean**](file:///C:/Users/Nyx/Desktop/MathQwen/formal/GQwenBipartite.lean) | **Verificação dedutiva formal no Lean 4**: orçamento $\le 9\text{B}$ certificado por `decide` e estabilidade provada por indução. | Certificado |
+> **Repositório de Pesquisa**: Compressão do checkpoint oficial `Qwen/Qwen3.8-27B-FP8` (64 camadas, $d=5120$) via **Atlas Assimétrico de Subespaços Compartilhados** e **Estabilizadores Compactos do Residual Stream**.
 
 ---
 
-## Diagrama Estrutural do Atlas Bipartido ($\mathcal{G}$-Qwen 9B v2)
+## 📌 Status Atual da Pesquisa e Arquitetura
 
-```
-                    Tokens de Entrada (X)
-                             │
-                             ▼
-                [Embeddings: 152.064 x 5120] (0.779 B)
-                             │
-                             ▼
-    ┌─────────────────────────────────────────────────────────────────┐
-    │  ATLAS BIPARTIDO POR OPERADOR (16 Macro-Cartas, 64 Camadas)     │
-    │                                                                 │
-    │  MACRO-CARTA g (g = 0 ... 15):                                  │
-    │  ├─ Sub-Feixe FFN: Bases U_g^ffn, V_g^ffn (r = 1792)           │
-    │  │   └─ Compartilhado pelas 4 camadas do macro-bloco           │
-    │  ├─ Sub-Feixe DeltaNet: Bases U_g^Delta, V_g^Delta (r = 1024)  │
-    │  │   └─ Dedicado exclusivamente às 3 camadas DeltaNet do bloco │
-    │  └─ Sub-Feixe Attention: Macro-Bases U^Attn, V^Attn (r = 2048) │
-    │      └─ Macro-cartas dedicadas às camadas quadráticas          │
-    └─────────────────────────────────────────────────────────────────┘
-                             │
-                             ▼
-                       [RMSNorm Final]
-                             │
-                             ▼
-                  [LM Head (Tied Embedding)]
-                             │
-                             ▼
-                      Logits de Saída (Y)
+O projeto organiza-se em duas vertentes explicitamente separadas:
+1. **`atlas/` e `reference/` (Canônico Atual)**:
+   - Baseado no checkpoint oficial `Qwen/Qwen3.8-27B-FP8` com vocabulário real completo ($V=248.320$), embeddings e `lm_head` separados.
+   - **Atlas Assimétrico ($V_{\rm joint}$, $r=2048$)**: Redução dos pesos densos para ~14,29 bilhões de parâmetros congelados através de 16 cartas locais.
+   - **Estabilizadores do Residual Stream ($r=64$, 41,94M parâmetros)**: Redução de **98,97%** na perplexidade no WikiText-2 (de **3.712,64 $\to$ 39,70**).
+   - **Sondagem Não-Linear (GELU)**: Incorporação de expressividade dependente do estado com rollback lexicográfico contra a degradação de NLL.
+2. **`legacy/g_qwen_9b_v1/` (Protótipo Legado 9B)**:
+   - Protótipo inicial com vocabulário simplificado de 152.064 tokens, embeddings amarrados e operador DeltaNet linear preliminar. Preservado para documentação e histórico.
+
+---
+
+## 📂 Estrutura do Repositório
+
+```text
+MathQwen/
+├── reference/                 # Pipeline oficial de referência (Qwen3_5 oficial, FP8, rotary)
+│   ├── loader.py              # Loader determinístico via safetensors e Qwen3_5DecoderLayer
+│   └── causal_stream.py       # Loop causal de 64 camadas
+│
+├── atlas/                     # Implementação oficial do Atlas Assimétrico e Estabilizadores
+│   ├── config.py              # Configuração canônica (V=248.320, d=5120, 64 camadas)
+│   ├── projection.py          # Álgebra exata das bases V_joint, U_mix, U_down
+│   ├── residual.py            # Módulos SVDLinear e NonLinearGELU com solver fechado
+│   └── atlas_model.py         # Modelo de inferência e streaming
+│
+├── experiments/
+│   ├── layer_probes/          # Sondagens detalhadas de divergência e camadas críticas
+│   ├── stabilization/         # Sweeps de posto residual (r=32..128) e análise de Lipschitz
+│   └── benchmarks/            # Resultados consolidados de PPL no WikiText-2
+│
+├── tests/
+│   ├── reference_equivalence/ # Teste de equivalência automática com o Qwen oficial
+│   ├── atlas_projection/      # Testes unitários das bases V_joint
+│   └── end_to_end/            # Teste end-to-end de 64 camadas e PPL final
+│
+├── docs/
+│   ├── 00_STATUS_ATUAL.md     # Documento mestre de alinhamento metodológico
+│   ├── 01 a 11                # Relatórios técnicos anteriores
+│   └── 12_ESTABILIZACAO_RESIDUAL_E_SONDAGEM_CRITICA.md # Relatório da estabilização residual
+│
+├── formal/                    # Formalização em Lean 4 de orçamentos de parâmetros
+└── legacy/g_qwen_9b_v1/       # Código original do protótipo 9B v1
 ```
 
 ---
 
-## Principais Indicadores Técnicos e Status Atual
+## 🔬 Resultados Principais no WikiText-2 (Teste Cego Não-Visto)
 
-* **Preservação Integral de Camadas**: **64 camadas ativas** (bijeção funcional exata $1:1$ com o Qwen 3.8 27B, sem loops espúrios).
-* **Fase 1 (Extração Analítica)**: **Concluída com Sucesso** (checkpoints em [`models/g_qwen_9b_phase1/`](file:///C:/Users/Nyx/Desktop/MathQwen/models/g_qwen_9b_phase1)).
-* **Fase 2 (Calibração Hessiana AWQ-Style)**: **Concluída com Sucesso em 268.53s** (checkpoints em [`models/g_qwen_9b_phase2/`](file:///C:/Users/Nyx/Desktop/MathQwen/models/g_qwen_9b_phase2), pico de VRAM 1.63 GB).
-* **Fase 3 (Fatoração LoRA-Residual SVD $r_\Delta=64$)**: **Concluída com Sucesso** (checkpoints em [`models/g_qwen_9b_phase3/`](file:///C:/Users/Nyx/Desktop/MathQwen/models/g_qwen_9b_phase3), redução de 55.1% no peso das cartas, eliminando todo o tráfego de I/O em disco).
-* **Validação Generativa Real**: **Confirmada com Sintaxe Three.js / HTML5** para o clone de Minecraft ([`generated_minecraft_by_g_qwen9b.html`](file:///C:/Users/Nyx/Desktop/MathQwen/generated_minecraft_by_g_qwen9b.html)).
-* **Taxa de Conservação de Energia Espectral**: **$\ge 96.8\%$** da variância dos pesos originais preservada analiticamente.
-* **Volume de Parâmetros Físicos**: **$8.641 \times 10^9$** parâmetros (auditado no PyTorch e certificado no Lean 4).
-* **Consumo de VRAM em Inferência**: **4.05 GB** (com margem de 7.95 GB livres na RTX 3060).
+| Modelo | Parâmetros Adicionais | $e_{64}$ | $\cos(z)$ | Top-1 Agree | PPL (WikiText-2) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Professor Oficial FP8** | 0 (Referência) | 0.00% | 1.0000 | 100.0% | **4.21** |
+| **Atlas Raw ($r=2048$)** | 0 M | 101.53% | 0.7283 | 8.33% | **3712.64** |
+| **Escalar ($h' = \alpha_l h$)** | 64 floats | 94.12% | 0.7714 | 16.67% | **649.27** |
+| **SVD Low-Rank ($r=32$)** | +20.97 M | 89.41% | 0.8897 | 42.06% | **50.72** |
+| **SVD Low-Rank ($r=64$)** | **+41.94 M** | **88.30%** | **0.9075** | **46.83%** | **39.70** |
+| **SVD Low-Rank ($r=128$)** | +83.89 M | 87.12% | 0.9175 | 50.00% | **38.22** |
+
+Para detalhes completos dos experimentos e fundamentação matemática, consulte [docs/00_STATUS_ATUAL.md](docs/00_STATUS_ATUAL.md) e [docs/12_ESTABILIZACAO_RESIDUAL_E_SONDAGEM_CRITICA.md](docs/12_ESTABILIZACAO_RESIDUAL_E_SONDAGEM_CRITICA.md).
