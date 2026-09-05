@@ -7,6 +7,7 @@ from .residual import (
     NonLinearResidualStabilizer,
     fit_svd_stabilizer,
     fit_gelu_warmstart,
+    fit_joint_alpha_stabilizer,
     freeze_backbone_and_isolate_stabilizer
 )
 from .atlas_model import AtlasStreamModel
@@ -22,6 +23,7 @@ __all__ = [
     "NonLinearResidualStabilizer",
     "fit_svd_stabilizer",
     "fit_gelu_warmstart",
+    "fit_joint_alpha_stabilizer",
     "freeze_backbone_and_isolate_stabilizer",
     "AtlasStreamModel",
     "calibrate_offline_stabilizers",

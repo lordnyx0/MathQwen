@@ -45,6 +45,13 @@ O projeto MathQwen passou por uma bifurcação metodológica e científica funda
 
 ---
 
+
+4. **Quebra do Marco <200 e Novo Recorde Terminal (PPL = 179.94)**:
+   - **Baseline Canônico SVD-256 Uniforme**: Aumentar a capacidade linear uniforme para $r=256$ reduziu a PPL E2E para **192.68** (superando o marco de $<200$).
+   - **Refutação do Logit-Lens Intermediário**: A otimização prematura via logit-lens em camadas intermediárias ($L_{48}	ext{--}L_{51}$) causou colapso semântico latente, degradando a PPL para $243.63$.
+   - **Vitória da Otimização Terminal em $L_{63}$**: Otimizar diretamente a camada final real ($L_{63}$) com AdamW em WikiText quebrou o recorde de 192.68, atingindo **PPL = 179.94** ($\Delta	ext{PPL} = -12.74$, Top-1 = 24.40%, KL = 3.0543).
+   - **Destilação com HF Cache**: Validada a destilação terminal com Top-32 logits gerados pelo Qwen3.8-27B BF16 (`Lordnyx/qwen35-9b-teacher-logits-cache`), revelando dinâmica de especialização em domínio de código.
+
 ## 4. Conformidade e Validação Arquitetural Pós-Auditoria (Commit ec26534+)
 
 Em conformidade com a auditoria rigorosa do repositório:
