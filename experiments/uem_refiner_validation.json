@@ -1,0 +1,646 @@
+{
+  "domain_names": [
+    "WikiText",
+    "HF_Code",
+    "GSM8K"
+  ],
+  "ranks": [
+    16,
+    32,
+    64,
+    128,
+    256
+  ],
+  "validation_records": [
+    {
+      "base_type": "avg",
+      "rank": 16,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 23.95163322766442,
+          "captured_error_pct": 76.04836677233557
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 15.342773587502718,
+          "captured_error_pct": 84.6572264124973
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 23.036562580604883,
+          "captured_error_pct": 76.96343741939512
+        }
+      },
+      "worst_retention_pct": 76.04836677233557,
+      "mean_retention_pct": 79.22301020140934
+    },
+    {
+      "base_type": "avg",
+      "rank": 16,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 44.549832320199364,
+          "captured_error_pct": 55.450167679800636
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 6.0955244737109835,
+          "captured_error_pct": 93.90447552628902
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 19.189118207215955,
+          "captured_error_pct": 80.81088179278404
+        }
+      },
+      "worst_retention_pct": 55.450167679800636,
+      "mean_retention_pct": 76.72184166629124
+    },
+    {
+      "base_type": "avg",
+      "rank": 16,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 38.2035917178208,
+          "captured_error_pct": 61.79640828217921
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 12.131857017752093,
+          "captured_error_pct": 87.8681429822479
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 10.939563895748005,
+          "captured_error_pct": 89.06043610425199
+        }
+      },
+      "worst_retention_pct": 61.79640828217921,
+      "mean_retention_pct": 79.5749957895597
+    },
+    {
+      "base_type": "avg",
+      "rank": 32,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 18.92635858477378,
+          "captured_error_pct": 81.07364141522622
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 14.659996748408616,
+          "captured_error_pct": 85.34000325159138
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 20.278366142088032,
+          "captured_error_pct": 79.72163385791197
+        }
+      },
+      "worst_retention_pct": 79.72163385791197,
+      "mean_retention_pct": 82.04509284157653
+    },
+    {
+      "base_type": "avg",
+      "rank": 32,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 42.05495093745792,
+          "captured_error_pct": 57.945049062542076
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 4.223057610519197,
+          "captured_error_pct": 95.77694238948081
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 17.352683536806758,
+          "captured_error_pct": 82.64731646319325
+        }
+      },
+      "worst_retention_pct": 57.945049062542076,
+      "mean_retention_pct": 78.78976930507204
+    },
+    {
+      "base_type": "avg",
+      "rank": 32,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 37.135402539271226,
+          "captured_error_pct": 62.86459746072877
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 9.994636993734202,
+          "captured_error_pct": 90.0053630062658
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 8.368458066567106,
+          "captured_error_pct": 91.63154193343289
+        }
+      },
+      "worst_retention_pct": 62.86459746072877,
+      "mean_retention_pct": 81.50050080014249
+    },
+    {
+      "base_type": "avg",
+      "rank": 64,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 14.580600175009817,
+          "captured_error_pct": 85.41939982499018
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 13.406813729695008,
+          "captured_error_pct": 86.59318627030498
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 17.488347460237662,
+          "captured_error_pct": 82.51165253976234
+        }
+      },
+      "worst_retention_pct": 82.51165253976234,
+      "mean_retention_pct": 84.8414128783525
+    },
+    {
+      "base_type": "avg",
+      "rank": 64,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 42.50012924906949,
+          "captured_error_pct": 57.49987075093051
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 2.576032754297387,
+          "captured_error_pct": 97.42396724570261
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 13.58973182087767,
+          "captured_error_pct": 86.41026817912233
+        }
+      },
+      "worst_retention_pct": 57.49987075093051,
+      "mean_retention_pct": 80.44470205858515
+    },
+    {
+      "base_type": "avg",
+      "rank": 64,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 31.905615904950384,
+          "captured_error_pct": 68.09438409504962
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 8.345983536574417,
+          "captured_error_pct": 91.65401646342558
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 5.910134898690442,
+          "captured_error_pct": 94.08986510130956
+        }
+      },
+      "worst_retention_pct": 68.09438409504962,
+      "mean_retention_pct": 84.61275521992825
+    },
+    {
+      "base_type": "avg",
+      "rank": 128,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 10.48635198118336,
+          "captured_error_pct": 89.51364801881664
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 10.655512345075635,
+          "captured_error_pct": 89.34448765492436
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 14.776835111364118,
+          "captured_error_pct": 85.22316488863588
+        }
+      },
+      "worst_retention_pct": 85.22316488863588,
+      "mean_retention_pct": 88.02710018745897
+    },
+    {
+      "base_type": "avg",
+      "rank": 128,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 40.2495336663221,
+          "captured_error_pct": 59.7504663336779
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 1.3981525026282036,
+          "captured_error_pct": 98.60184749737179
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 12.449175283688119,
+          "captured_error_pct": 87.55082471631188
+        }
+      },
+      "worst_retention_pct": 59.7504663336779,
+      "mean_retention_pct": 81.96771284912052
+    },
+    {
+      "base_type": "avg",
+      "rank": 128,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 28.891778008880397,
+          "captured_error_pct": 71.1082219911196
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 6.786114856979849,
+          "captured_error_pct": 93.21388514302015
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 3.876288856688008,
+          "captured_error_pct": 96.123711143312
+        }
+      },
+      "worst_retention_pct": 71.1082219911196,
+      "mean_retention_pct": 86.81527275915057
+    },
+    {
+      "base_type": "avg",
+      "rank": 256,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 6.830820910162336,
+          "captured_error_pct": 93.16917908983766
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 8.991388893321869,
+          "captured_error_pct": 91.00861110667813
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 13.421049416030453,
+          "captured_error_pct": 86.57895058396954
+        }
+      },
+      "worst_retention_pct": 86.57895058396954,
+      "mean_retention_pct": 90.25224692682843
+    },
+    {
+      "base_type": "avg",
+      "rank": 256,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 40.3906478509699,
+          "captured_error_pct": 59.609352149030094
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 0.6348493732707219,
+          "captured_error_pct": 99.36515062672927
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 11.888670998999473,
+          "captured_error_pct": 88.11132900100053
+        }
+      },
+      "worst_retention_pct": 59.609352149030094,
+      "mean_retention_pct": 82.36194392558663
+    },
+    {
+      "base_type": "avg",
+      "rank": 256,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 26.449102121131517,
+          "captured_error_pct": 73.55089787886848
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 5.677156997005743,
+          "captured_error_pct": 94.32284300299426
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 2.416102509491867,
+          "captured_error_pct": 97.58389749050814
+        }
+      },
+      "worst_retention_pct": 73.55089787886848,
+      "mean_retention_pct": 88.48587945745696
+    },
+    {
+      "base_type": "minimax",
+      "rank": 16,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 23.93520771969534,
+          "captured_error_pct": 76.06479228030466
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 15.319472593872247,
+          "captured_error_pct": 84.68052740612775
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 23.041481018730728,
+          "captured_error_pct": 76.95851898126928
+        }
+      },
+      "worst_retention_pct": 76.06479228030466,
+      "mean_retention_pct": 79.2346128892339
+    },
+    {
+      "base_type": "minimax",
+      "rank": 16,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 44.636310317960806,
+          "captured_error_pct": 55.363689682039194
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 6.082629694609739,
+          "captured_error_pct": 93.91737030539026
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 19.13038060701946,
+          "captured_error_pct": 80.86961939298054
+        }
+      },
+      "worst_retention_pct": 55.363689682039194,
+      "mean_retention_pct": 76.71689312680333
+    },
+    {
+      "base_type": "minimax",
+      "rank": 16,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 38.243130298136876,
+          "captured_error_pct": 61.75686970186312
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 12.087309717071653,
+          "captured_error_pct": 87.91269028292835
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 10.93243780794146,
+          "captured_error_pct": 89.06756219205853
+        }
+      },
+      "worst_retention_pct": 61.75686970186312,
+      "mean_retention_pct": 79.57904072561666
+    },
+    {
+      "base_type": "minimax",
+      "rank": 32,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 18.928465521659867,
+          "captured_error_pct": 81.07153447834014
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 14.630176363922894,
+          "captured_error_pct": 85.3698236360771
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 20.277390668973304,
+          "captured_error_pct": 79.72260933102669
+        }
+      },
+      "worst_retention_pct": 79.72260933102669,
+      "mean_retention_pct": 82.05465581514798
+    },
+    {
+      "base_type": "minimax",
+      "rank": 32,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 42.1510657053706,
+          "captured_error_pct": 57.84893429462941
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 4.220840531385836,
+          "captured_error_pct": 95.77915946861417
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 17.389765633856268,
+          "captured_error_pct": 82.61023436614373
+        }
+      },
+      "worst_retention_pct": 57.84893429462941,
+      "mean_retention_pct": 78.74610937646243
+    },
+    {
+      "base_type": "minimax",
+      "rank": 32,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 37.215901186734094,
+          "captured_error_pct": 62.7840988132659
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 9.997290756104714,
+          "captured_error_pct": 90.00270924389528
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 8.372202086403506,
+          "captured_error_pct": 91.6277979135965
+        }
+      },
+      "worst_retention_pct": 62.7840988132659,
+      "mean_retention_pct": 81.4715353235859
+    },
+    {
+      "base_type": "minimax",
+      "rank": 64,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 14.580028545074336,
+          "captured_error_pct": 85.41997145492566
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 13.443946454468744,
+          "captured_error_pct": 86.55605354553126
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 17.508412685504183,
+          "captured_error_pct": 82.49158731449582
+        }
+      },
+      "worst_retention_pct": 82.49158731449582,
+      "mean_retention_pct": 84.82253743831757
+    },
+    {
+      "base_type": "minimax",
+      "rank": 64,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 42.48970838475895,
+          "captured_error_pct": 57.51029161524105
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 2.576919835305899,
+          "captured_error_pct": 97.4230801646941
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 13.570708811623202,
+          "captured_error_pct": 86.4292911883768
+        }
+      },
+      "worst_retention_pct": 57.51029161524105,
+      "mean_retention_pct": 80.45422098943732
+    },
+    {
+      "base_type": "minimax",
+      "rank": 64,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 31.908410821227847,
+          "captured_error_pct": 68.09158917877215
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 8.345506021428585,
+          "captured_error_pct": 91.65449397857142
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 5.910533430798499,
+          "captured_error_pct": 94.08946656920149
+        }
+      },
+      "worst_retention_pct": 68.09158917877215,
+      "mean_retention_pct": 84.61184990884836
+    },
+    {
+      "base_type": "minimax",
+      "rank": 128,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 10.488558194507355,
+          "captured_error_pct": 89.51144180549264
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 10.66883165134961,
+          "captured_error_pct": 89.3311683486504
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 14.783007545849289,
+          "captured_error_pct": 85.21699245415071
+        }
+      },
+      "worst_retention_pct": 85.21699245415071,
+      "mean_retention_pct": 88.01986753609792
+    },
+    {
+      "base_type": "minimax",
+      "rank": 128,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 40.28070520315779,
+          "captured_error_pct": 59.71929479684221
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 1.3985296523191029,
+          "captured_error_pct": 98.6014703476809
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 12.468315093012903,
+          "captured_error_pct": 87.5316849069871
+        }
+      },
+      "worst_retention_pct": 59.71929479684221,
+      "mean_retention_pct": 81.95081668383673
+    },
+    {
+      "base_type": "minimax",
+      "rank": 128,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 28.88828499586757,
+          "captured_error_pct": 71.11171500413242
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 6.779942693195397,
+          "captured_error_pct": 93.2200573068046
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 3.87714271654271,
+          "captured_error_pct": 96.12285728345728
+        }
+      },
+      "worst_retention_pct": 71.11171500413242,
+      "mean_retention_pct": 86.8182098647981
+    },
+    {
+      "base_type": "minimax",
+      "rank": 256,
+      "fit_domain": "WikiText",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 6.832029932769237,
+          "captured_error_pct": 93.16797006723077
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 9.004849708653422,
+          "captured_error_pct": 90.99515029134658
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 13.423146683227118,
+          "captured_error_pct": 86.57685331677288
+        }
+      },
+      "worst_retention_pct": 86.57685331677288,
+      "mean_retention_pct": 90.24665789178341
+    },
+    {
+      "base_type": "minimax",
+      "rank": 256,
+      "fit_domain": "HF_Code",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 40.40590480570804,
+          "captured_error_pct": 59.59409519429195
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 0.6351745479938878,
+          "captured_error_pct": 99.36482545200612
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 11.895245174385842,
+          "captured_error_pct": 88.10475482561417
+        }
+      },
+      "worst_retention_pct": 59.59409519429195,
+      "mean_retention_pct": 82.35455849063742
+    },
+    {
+      "base_type": "minimax",
+      "rank": 256,
+      "fit_domain": "GSM8K",
+      "test_metrics": {
+        "WikiText": {
+          "unexplained_error_pct": 26.455402697101793,
+          "captured_error_pct": 73.54459730289821
+        },
+        "HF_Code": {
+          "unexplained_error_pct": 5.6831078580790075,
+          "captured_error_pct": 94.31689214192099
+        },
+        "GSM8K": {
+          "unexplained_error_pct": 2.4160786039829696,
+          "captured_error_pct": 97.58392139601703
+        }
+      },
+      "worst_retention_pct": 73.54459730289821,
+      "mean_retention_pct": 88.48180361361209
+    }
+  ]
+}

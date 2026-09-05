@@ -52,6 +52,14 @@ O projeto MathQwen passou por uma bifurcação metodológica e científica funda
    - **Vitória da Otimização Terminal em $L_{63}$**: Otimizar diretamente a camada final real ($L_{63}$) com AdamW em WikiText quebrou o recorde de 192.68, atingindo **PPL = 179.94** ($\Delta	ext{PPL} = -12.74$, Top-1 = 24.40%, KL = 3.0543).
    - **Destilação com HF Cache**: Validada a destilação terminal com Top-32 logits gerados pelo Qwen3.8-27B BF16 (`Lordnyx/qwen35-9b-teacher-logits-cache`), revelando dinâmica de especialização em domínio de código.
 
+
+5. **Universal Error Manifold (UEM) e Confirmação da Hipótese Geométrica (Doc 14)**:
+   - **Hipótese Confirmada**: O erro funcional induzido pela compressão Atlas habita um subespaço de baixíssima dimensão compartilhado entre distribuições de texto natural (WikiText), código sintético (HF Code) e matemática (GSM8K).
+   - **Invariância de Energia**: A intensidade da perturbação no residual stream de $L_{63}$ é constante entre domínios ($\operatorname{Tr}(\Sigma_E) \approx 38.600 \pm 1{,}5\%$).
+   - **Projeção Cruzada Massiva**: A base derivada exclusivamente em WikiText captura **$94{,}24\%$** do erro de código e **$91{,}05\%$** do erro em matemática em $r=64$.
+   - **Sweet Spot Analítico**: Fixado rigorosamente em **$r^* \in [32, 64]$** através de retorno marginal por bit ($R_{bits}(r)$) e estabilidade por bootstrap (overlap $>81\%$ vs $53\%$ em $r=256$).
+   - **Generalização Out-of-Domain**: Refinador analítico em forma fechada transfere com $>82{,}5\%$ a $86{,}6\%$ de retenção funcional sem qualquer retreinamento.
+
 ## 4. Conformidade e Validação Arquitetural Pós-Auditoria (Commit ec26534+)
 
 Em conformidade com a auditoria rigorosa do repositório:

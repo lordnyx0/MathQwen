@@ -66,3 +66,5 @@
 * **Taxa de Conservação de Energia Espectral**: **$\ge 96.8\%$** da variância dos pesos originais preservada analiticamente.
 * **Volume de Parâmetros Físicos**: **$8.641 \times 10^9$** parâmetros (auditado no PyTorch e certificado no Lean 4).
 * **Consumo de VRAM em Inferência**: **4.05 GB** (com margem de 7.95 GB livres na RTX 3060).
+
+- [14_UNIVERSAL_ERROR_MANIFOLD.md](14_UNIVERSAL_ERROR_MANIFOLD.md): Prova geométrica e validação funcional da hipótese do Universal Error Manifold (UEM) em L63, separação Média vs Minimax no Grassmanniano, projeção cruzada, bootstrap e derivação analítica do sweet spot r*=32-64.
