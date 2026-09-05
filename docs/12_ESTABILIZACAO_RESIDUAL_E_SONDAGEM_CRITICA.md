@@ -83,3 +83,21 @@ Avaliando a rede inteira em streaming causal pelas 64 camadas completas:
    - Quando a GELU é aplicada cegamente em todas as 64 camadas sem rollback por camada, a perturbação de escala angular acumula-se ao longo da rede.
    - O SVD linear, por ser conservativo e puramente projetivo, atua com maior estabilidade em cascata uniforme.
    - Isso estabelece a necessidade do **modelo híbrido com Rollback Lexicográfico**: GELU nas camadas receptivas ($L_0, L_{32}, L_{48}, L_{63}$) e SVD linear nas camadas de transição crítica.
+### 5.4 Inferência Pura Desacoplada com Estabilizadores Persistidos (Política Adaptativa)
+
+Para desacoplar a calibração da execução final, implementou-se o módulo de calibração offline ([`atlas/calibration.py`](../atlas/calibration.py)) e persistência de estabilizadores no [`AtlasStreamModel`](../atlas/atlas_model.py).
+
+Os estabilizadores da **Política Adaptativa por Profundidade** (GELU nas camadas receptivas $L_0, L_{32}, L_{48}, L_{63}$ e SVD-64 linear nas demais) foram calibrados offline e persistidos em `checkpoints/atlas_stabilizers_adaptive.pt` (80,04 MB).
+
+O teste de inferência pura ([`tests/end_to_end/test_pure_inference_persisted.py`](../tests/end_to_end/test_pure_inference_persisted.py)) avaliou o modelo no conjunto cego de teste do WikiText-2 (1.024 tokens não-vistos) **sem carregar o professor e sem qualquer cálculo de fit/SVD em tempo de execução**:
+
+| Métrica | Professor Oficial FP8 | Atlas Raw ($r=2048$) | Atlas SVD-64 Uniforme | Atlas GELU-64 Uniforme | **Atlas Política Adaptativa (Persistida)** |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **NLL Terminal** | **1.9892** | 7.6983 | 5.7816 | 6.4619 | **5.8730** |
+| **PPL Terminal** | **7.31** | 2204.61 | 324.27 | 640.29 | **355.31** |
+| **Top-1 Accuracy** | **53.87%** | 7.34% | 18.15% | 16.17% | **18.75%** (Novo Recorde Aluno) |
+| **Throughput** | - | - | - | - | **2.5 tokens/s** (RTX 3060 12GB) |
+| **Dependência do Professor** | Sim | Não | Sim (no forward) | Sim (no forward) | **NÃO (100% Desacoplado)** |
+
+**Conclusão da Arquitetura de Inferência**:
+A política adaptativa persistida alcançou a maior precisão Top-1 (18,75%), mantendo a PPL estável em 355,31 e viabilizando a inferência completa em hardware doméstico de 12GB sem custos computacionais adicionais no loop causal.

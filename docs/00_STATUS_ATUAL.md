@@ -19,7 +19,7 @@ O projeto MathQwen passou por uma bifurcação metodológica e científica funda
   - DeltaNet ingênua causal (model/layers.py)                 - DeltaNet recorrente oficial (Qwen3_5DecoderLayer)
   - Orçamento teórico restrito a 8.64B                        - Atlas Assimétrico (V_joint, r=2048, ~14.29B)
                                                               - Estabilizadores Residuais (r=64, 41.94M)
-                                                              - PPL WikiText-2 reduzida de 3712 -> 39.70
+                                                              - PPL E2E 64 camadas (WikiText-2): Raw 2204 -> SVD-64 324.27
 ```
 
 ---

@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import safetensors.torch as st
 from .config import AtlasConfig
 from .projection import compute_chart_atlas_bases, project_layer_weights
+from .residual import LinearResidualStabilizer, NonLinearResidualStabilizer
 from reference.loader import load_qwen_reference_components, load_layer_module, dequant
 
 class AtlasStreamModel:
@@ -52,7 +53,69 @@ class AtlasStreamModel:
             self.bases_cache[chart_idx] = compute_chart_atlas_bases(chart_weights, r_base=self.config.r_base, device=device)
         print(f"[OK] Cache de bases Atlas construído para todas as {self.config.num_charts} cartas!")
 
+    def save_bases(self, filepath: str):
+        """Persiste em disco as bases Atlas pré-computadas."""
+        os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+        torch.save(self.bases_cache, filepath)
+        print(f"[OK] Bases Atlas salvas com sucesso em: {filepath}")
+
+    def load_bases(self, filepath: str):
+        """Carrega do disco as bases Atlas pré-computadas."""
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"Arquivo de bases não encontrado: {filepath}")
+        raw_cache = torch.load(filepath, map_location=self.device)
+        self.bases_cache = {
+            c_idx: {k: v.to(device=self.device, dtype=torch.bfloat16) for k, v in b.items()}
+            for c_idx, b in raw_cache.items()
+        }
+        print(f"[OK] Bases Atlas carregadas de: {filepath} ({len(self.bases_cache)} cartas)")
+
+    def save_stabilizers(self, filepath: str):
+        """Persiste em disco os 64 estabilizadores residuais previamente calibrados."""
+        os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+        state = {}
+        for l, stab in self.stabilizers.items():
+            if isinstance(stab, LinearResidualStabilizer):
+                state[f"stabilizer.{l}.type"] = "linear"
+                state[f"stabilizer.{l}.W_down"] = stab.W_down.data.cpu()
+                state[f"stabilizer.{l}.W_up"] = stab.W_up.data.cpu()
+            elif isinstance(stab, NonLinearResidualStabilizer):
+                state[f"stabilizer.{l}.type"] = "nonlinear"
+                state[f"stabilizer.{l}.W_down"] = stab.W_down.data.cpu()
+                state[f"stabilizer.{l}.W_up"] = stab.W_up.data.cpu()
+                state[f"stabilizer.{l}.delta_alpha"] = stab.delta_alpha.data.cpu()
+        torch.save(state, filepath)
+        print(f"[OK] {len(self.stabilizers)} estabilizadores residuais salvos em: {filepath}")
+
+    def load_stabilizers(self, filepath: str):
+        """Carrega do disco os estabilizadores residuais calibrados offline."""
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"Arquivo de estabilizadores não encontrado: {filepath}")
+        state = torch.load(filepath, map_location=self.device)
+        layers = set()
+        for k in state.keys():
+            if k.startswith("stabilizer."):
+                l = int(k.split(".")[1])
+                layers.add(l)
+
+        for l in sorted(layers):
+            stype = state[f"stabilizer.{l}.type"]
+            W_down = state[f"stabilizer.{l}.W_down"].to(device=self.device, dtype=torch.bfloat16)
+            W_up = state[f"stabilizer.{l}.W_up"].to(device=self.device, dtype=torch.bfloat16)
+            if stype == "linear":
+                stab = LinearResidualStabilizer(W_down, W_up)
+            elif stype == "nonlinear":
+                delta_alpha = state[f"stabilizer.{l}.delta_alpha"].item()
+                stab = NonLinearResidualStabilizer(W_down, W_up, delta_alpha=delta_alpha)
+            else:
+                raise ValueError(f"Tipo desconhecido de estabilizador: {stype}")
+            stab.freeze()
+            self.stabilizers[l] = stab
+
+        print(f"[OK] {len(self.stabilizers)} estabilizadores carregados com sucesso de: {filepath}")
+
     def forward_tokens(self, input_ids: torch.Tensor, use_atlas=True):
+        """Executa a inferência causal pura pelas 64 camadas."""
         device = self.device
         num_seqs, seq_len = input_ids.shape
         cfg = self.comp["cfg"]
@@ -105,7 +168,7 @@ class AtlasStreamModel:
                     out = layer_mod(x, position_embeddings=pos_emb)
                     x = out[0] if isinstance(out, tuple) else out
 
-                # Aplicar estabilizador residual se registrado
+                # Aplicação direta do estabilizador persistido (sem fit na inferência!)
                 if l in self.stabilizers:
                     with torch.no_grad():
                         x = self.stabilizers[l](x)
