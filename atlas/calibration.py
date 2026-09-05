@@ -3,6 +3,7 @@
 import os
 import sys
 import time
+import math
 import torch
 import torch.nn.functional as F
 import safetensors.torch as st
@@ -21,11 +22,12 @@ from .residual import (
 from reference.loader import load_qwen_reference_components, load_layer_module, dequant, get_snapshot_dir
 
 def calibrate_offline_stabilizers(
-    policy: str = "adaptive",
+    policy: str = "probe_selected",
     output_path: str = "checkpoints/atlas_stabilizers_adaptive.pt",
     r_base: int = 2048,
     r_corr: int = 64,
     num_train_seqs: int = 16,
+    num_val_seqs: int = 8,
     seq_len: int = 64,
     device = None
 ):
@@ -33,10 +35,17 @@ def calibrate_offline_stabilizers(
     Executa a calibração offline das 64 camadas e salva os estabilizadores em disco.
     
     Políticas suportadas:
-      - 'adaptive': GELU nas camadas receptivas (L0, L32, L48, L63) e SVD-64 linear nas demais.
+      - 'probe_selected' (antiga 'adaptive'): GELU nas camadas receptivas comprovadas pelo probe
+        (L0, L32, L48, L63) e SVD-64 linear nas demais.
+      - 'auto_learned': Seleciona dinamicamente entre GELU e SVD avaliando o critério lexicográfico
+        no split de validação independente (D_val).
       - 'linear': SVD-64 linear uniforme em todas as 64 camadas.
       - 'nonlinear': GELU-64 não-linear uniforme em todas as 64 camadas.
     """
+    if policy == "adaptive":
+        print("[INFO] Política 'adaptive' mapeada explicitamente para 'probe_selected'.")
+        policy = "probe_selected"
+
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("=" * 90)
@@ -51,20 +60,28 @@ def calibrate_offline_stabilizers(
     raw_text = " ".join([t.strip() for t in ds["text"] if len(t.strip()) > 50])
     tokens_all = tokenizer(raw_text, return_tensors="pt")["input_ids"][0]
 
-    train_ids = tokens_all[:num_train_seqs * seq_len].view(num_train_seqs, seq_len).to(device)
+    # Split triplo formal: Treino (Tokens 0..1024), Validação (Tokens 1024..1536)
+    train_tokens = num_train_seqs * seq_len
+    val_tokens = num_val_seqs * seq_len
 
-    comp = load_qwen_reference_components(device=device, seq_len=seq_len, num_seqs=num_train_seqs)
+    train_ids = tokens_all[:train_tokens].view(num_train_seqs, seq_len).to(device)
+    val_ids = tokens_all[train_tokens:train_tokens + val_tokens].view(num_val_seqs, seq_len).to(device)
+
+    total_seqs = num_train_seqs + num_val_seqs
+    all_calib_ids = torch.cat([train_ids, val_ids], dim=0)
+
+    comp = load_qwen_reference_components(device=device, seq_len=seq_len, num_seqs=total_seqs)
     cfg = comp["cfg"]
 
-    x_0 = F.embedding(train_ids.cpu(), comp["embed_w"]).to(device=device, dtype=torch.bfloat16)
-    pos_ids = torch.arange(seq_len, device=device).view(1, 1, -1).expand(3, num_train_seqs, -1)
+    x_0 = F.embedding(all_calib_ids.cpu(), comp["embed_w"]).to(device=device, dtype=torch.bfloat16)
+    pos_ids = torch.arange(seq_len, device=device).view(1, 1, -1).expand(3, total_seqs, -1)
     pos_emb = comp["rotary"](x_0, pos_ids)
 
     h_prof = x_0.clone()
     h_stud = x_0.clone()
 
     stabilizers = {}
-    gelu_layers = {0, 32, 48, 63} if policy == "adaptive" else (set(range(64)) if policy == "nonlinear" else set())
+    gelu_layers_fixed = {0, 32, 48, 63}
 
     t_start = time.time()
 
@@ -91,7 +108,7 @@ def calibrate_offline_stabilizers(
         for l in range(start_l, end_l):
             layer_mod = load_layer_module(l, cfg, device, snapshot_dir=snapshot_dir)
 
-            # 1. Forward Professor Oficial
+            # 1. Forward Professor Oficial (treino + val)
             with torch.no_grad():
                 out_p = layer_mod(h_prof, position_embeddings=pos_emb)
                 h_prof_next = out_p[0] if isinstance(out_p, tuple) else out_p
@@ -106,22 +123,55 @@ def calibrate_offline_stabilizers(
             layer_mod.mlp.up_proj.weight.data.copy_(p_w["up"])
             layer_mod.mlp.down_proj.weight.data.copy_(p_w["down"])
 
-            # 3. Forward Aluno Atlas
+            # 3. Forward Aluno Atlas (treino + val)
             with torch.no_grad():
                 out_s = layer_mod(h_stud, position_embeddings=pos_emb)
                 h_stud_in = out_s[0] if isinstance(out_s, tuple) else out_s
 
-            # 4. Ajuste do Estabilizador conforme a política
-            x_tr = h_stud_in.reshape(-1, 5120)
-            y_tr = h_prof_next.reshape(-1, 5120)
+            # 4. Ajuste dos Estabilizadores com Treino ([:num_train_seqs])
+            x_tr = h_stud_in[:num_train_seqs].reshape(-1, 5120)
+            y_tr = h_prof_next[:num_train_seqs].reshape(-1, 5120)
+
+            # Validação ([num_train_seqs:])
+            x_val = h_stud_in[num_train_seqs:].reshape(-1, 5120)
+            y_val = h_prof_next[num_train_seqs:].reshape(-1, 5120)
 
             lambda_l = 5e-3 if (48 <= l <= 55) else 1e-3
 
-            if l in gelu_layers:
+            if policy == "auto_learned":
+                # Avaliação competitiva no split de validação independente
+                W_d_svd, W_u_svd = fit_svd_stabilizer(x_tr, y_tr, r_corr=r_corr, lambda_reg=lambda_l)
+                stab_svd = LinearResidualStabilizer(W_d_svd, W_u_svd)
+                
+                W_d_g, _ = fit_svd_stabilizer(x_tr, y_tr, r_corr=r_corr, lambda_reg=lambda_l)
+                W_u_g = fit_gelu_warmstart(x_tr, y_tr, W_d_g, lambda_reg=lambda_l)
+                stab_gelu = NonLinearResidualStabilizer(W_d_g, W_u_g)
+
+                with torch.no_grad():
+                    pred_svd = stab_svd(x_val)
+                    err_svd = torch.norm((y_val - pred_svd).float()) / torch.norm(y_val.float())
+
+                    pred_gelu = stab_gelu(x_val)
+                    err_gelu = torch.norm((y_val - pred_gelu).float()) / torch.norm(y_val.float())
+
+                # Critério lexicográfico de seleção
+                if err_gelu < err_svd:
+                    stab = stab_gelu
+                else:
+                    stab = stab_svd
+            elif policy == "probe_selected":
+                if l in gelu_layers_fixed:
+                    W_down, _ = fit_svd_stabilizer(x_tr, y_tr, r_corr=r_corr, lambda_reg=lambda_l)
+                    W_up = fit_gelu_warmstart(x_tr, y_tr, W_down, lambda_reg=lambda_l)
+                    stab = NonLinearResidualStabilizer(W_down, W_up)
+                else:
+                    W_down, W_up = fit_svd_stabilizer(x_tr, y_tr, r_corr=r_corr, lambda_reg=lambda_l)
+                    stab = LinearResidualStabilizer(W_down, W_up)
+            elif policy == "nonlinear":
                 W_down, _ = fit_svd_stabilizer(x_tr, y_tr, r_corr=r_corr, lambda_reg=lambda_l)
                 W_up = fit_gelu_warmstart(x_tr, y_tr, W_down, lambda_reg=lambda_l)
                 stab = NonLinearResidualStabilizer(W_down, W_up)
-            else:
+            else: # linear
                 W_down, W_up = fit_svd_stabilizer(x_tr, y_tr, r_corr=r_corr, lambda_reg=lambda_l)
                 stab = LinearResidualStabilizer(W_down, W_up)
 

@@ -11,6 +11,8 @@ from .residual import (
 )
 from .atlas_model import AtlasStreamModel
 from .calibration import calibrate_offline_stabilizers
+from .export import export_autonomous_atlas_model
+from .autonomous_model import AtlasAutonomousModel
 
 __all__ = [
     "AtlasConfig",
@@ -22,5 +24,7 @@ __all__ = [
     "fit_gelu_warmstart",
     "freeze_backbone_and_isolate_stabilizer",
     "AtlasStreamModel",
-    "calibrate_offline_stabilizers"
+    "calibrate_offline_stabilizers",
+    "export_autonomous_atlas_model",
+    "AtlasAutonomousModel"
 ]

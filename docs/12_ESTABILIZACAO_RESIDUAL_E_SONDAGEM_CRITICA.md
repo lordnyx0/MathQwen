@@ -101,3 +101,37 @@ O teste de inferência pura ([`tests/end_to_end/test_pure_inference_persisted.py
 
 **Conclusão da Arquitetura de Inferência**:
 A política adaptativa persistida alcançou a maior precisão Top-1 (18,75%), mantendo a PPL estável em 355,31 e viabilizando a inferência completa em hardware doméstico de 12GB sem custos computacionais adicionais no loop causal.
+
+
+### 5.5 Modelo Autônomo e Autocontido (Exportação Dedicada em FP8 Bloco-128)
+
+Com a calibração offline e persistência validadas, a etapa final da arquitetura consistiu no **desacoplamento físico e de runtime** do modelo compactado em relação ao snapshot oficial do Hugging Face.
+
+#### 5.5.1 Módulo de Exportação (tlas/export.py)
+O exportador processa o modelo através do pipeline:
+1. Reutiliza as bases Atlas {\\rm mix}, U_{\\rm down}, V_{\\rm joint}$ pré-calculadas (tlas_bases.pt, 960 MB), eliminando o custo de decomposições espectrais (eigh).
+2. Projeta os pesos de MLP ({\\rm gate}, W_{\\rm up}, W_{\\rm down}$) de cada carta sobre as bases compartilhadas para obter os fatores {\\rm gate}, C_{\\rm up}, C_{\\rm down}, C_{\\rm mix}$.
+3. Quantiza os fatores para **FP8 bloco-128** (	orch.float8_e4m3fn) via quantize_fp8_block128(), preservando alta fidelidade espectral (erro relativo de Frobenius $< 2,7\%$) e reduzindo a pegada de cada carta para **829,2 MB**.
+4. Preserva os submódulos de atenção linear/full-attention em seu formato nativo FP8 com escalas inversas de quantização.
+5. Vincula outside.safetensors (5,7 GB) via hardlink NTFS sem duplicação de blocos físicos no disco.
+
+#### 5.5.2 Módulo de Runtime Autônomo (tlas/autonomous_model.py)
+A classe AtlasAutonomousModel fornece inferência pura:
+- Carrega exclusivamente o diretório checkpoints/atlas_autonomous/.
+- Não executa nenhum cálculo de SVD ou ajuste de hiperparâmetros no loop causal.
+- Aplica os estabilizadores da política adaptativa por profundidade camada a camada.
+
+#### 5.5.3 Resultados do Benchmark Autônomo (	ests/end_to_end/test_autonomous_atlas_inference.py)
+Executado em hardware de consumidor (NVIDIA GeForce RTX 3060 12GB):
+
+| Métrica | Snapshot Oficial Professor | Atlas Raw (=2048$) | Atlas Stream (Persistido) | **Atlas Autônomo FP8 Bloco-128** |
+| :--- | :---: | :---: | :---: | :---: |
+| **Dependência Externa** | Hugging Face 27B | Hugging Face 27B | HF 27B + bases.pt | **100% Autônomo / Autocontido** |
+| **Tamanho em Disco** | 28,31 GB | 28,31 GB | 29,35 GB | **19,57 GB** |
+| **Pico de VRAM** | > 18 GB (com cache) | ~7.2 GB | ~5.8 GB | **5.02 GB** |
+| **Throughput** | - | - | 2.9 tokens/s | **4.7 tokens/s** |
+| **NLL Terminal** | 1.9892 | 7.6983 | 5.8730 | **6.3065** |
+| **PPL Terminal** | 7.31 | 2204.61 | 355.31 | **548.10** |
+| **Top-1 Accuracy** | 53.87% | 7.34% | 18.75% | **14.78%** |
+
+O modelo autônomo opera de maneira 100% independente do checkpoint original, permitindo inferência local eficiente em GPUs domésticas com apenas 5.02 GB de pico de VRAM.

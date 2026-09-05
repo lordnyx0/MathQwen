@@ -55,3 +55,30 @@ Em conformidade com a auditoria rigorosa do repositório:
    - `tests/end_to_end/test_64layer_atlas_nonlinear_stabilized_ppl.py`: Valida a comparação quadripartida (Professor vs Atlas Raw vs SVD-64 vs GELU-64).
 4. **Garantia Estrutural de Congelamento**: `atlas/residual.py` implementa `freeze_backbone_and_isolate_stabilizer()` e métodos `.freeze()` / `.unfreeze()`, garantindo `requires_grad=False` em todos os pesos de backbone.
 5. **Cache de Bases no AtlasStreamModel**: `AtlasStreamModel.precompute_and_cache_chart_bases()` elimina o recalculo de decomposições espectrais (`torch.linalg.eigh`) durante inferência contínua.
+
+---
+
+## 5. Transição Concluída: Modelo Atlas 100% Autônomo e Desacoplado (FP8 Bloco-128)
+
+Em resposta à necessidade de desacoplamento completo do pipeline de exploração em streaming para um artefato de inferência independente:
+
+1. **Checkpoint Autônomo Dedicado (checkpoints/atlas_autonomous/)**:
+   - outside.safetensors: Tensores de entrada/saída (embed_tokens, 
+orm, lm_head) vinculados via hardlink NTFS (0 bytes adicionais de disco físico).
+   - charts/chart_{00..15}.pt: As 16 cartas comprimidas em **FP8 bloco-128**, com tamanho uniforme de **829,2 MB por carta** (~13,2 GB total das 16 cartas).
+   - stabilizers.pt: Os 64 estabilizadores residuais calibrados offline (80,0 MB).
+   - tlas_bases.pt: As bases Atlas {\\rm mix}, U_{\\rm down}, V_{\\rm joint}$ pré-calculadas e empacotadas (960,0 MB).
+   - **Tamanho Total em Disco**: **19,57 GB** (vs ~28,3 GB do FP8 original descompactado).
+
+2. **Runtime Autônomo de Inferência (tlas/autonomous_model.py)**:
+   - Consome exclusivamente os tensores do diretório checkpoints/atlas_autonomous/.
+   - **Zero dependência do Hugging Face Hub**: nenhuma chamada a get_snapshot_dir() ou leitura de layers-{l}.safetensors do professor no forward pass.
+   - **Zero decomposição espectral em runtime**: bases pré-calculadas e fatores em FP8 bloco-128 reconstroem diretamente os pesos projetados no forward.
+
+3. **Validação End-to-End no WikiText-2 (	ests/end_to_end/test_autonomous_atlas_inference.py)**:
+   - Avaliado em 1.024 tokens de teste cego (16 sequências de 64 tokens):
+     - **Pico de VRAM**: **5,02 GB** (5142,7 MB), viabilizando inferência em GPUs de consumidor de 6GB/8GB/12GB.
+     - **Throughput**: **4,7 tokens/s** (aceleração sobre o streaming causal com quantização ad-hoc).
+     - **NLL Terminal**: **6,3065**
+     - **PPL Terminal**: **548,10**
+     - **Top-1 Accuracy**: **14,78%**

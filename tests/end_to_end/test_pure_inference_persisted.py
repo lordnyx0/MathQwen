@@ -57,10 +57,19 @@ def test_pure_inference():
     test_ids = tokens_all[1024:1024 + num_seqs * seq_len].view(num_seqs, seq_len).to(device)
     test_targets = test_ids[:, 1:].contiguous()
 
-    # 2. Inicializar o modelo e carregar os estabilizadores persistidos
-    print(f"\n[1/3] Inicializando AtlasStreamModel e carregando estabilizadores de {checkpoint_path}...")
+    # 2. Inicializar o modelo e carregar as bases Atlas e estabilizadores persistidos
+    print(f"\n[1/3] Inicializando AtlasStreamModel, carregando bases e estabilizadores...")
     model = AtlasStreamModel(device=device)
     model.freeze_backbone()
+
+    bases_path = os.path.join(repo_root, "checkpoints", "atlas_bases.pt")
+    if os.path.exists(bases_path):
+        model.load_bases(bases_path)
+    else:
+        print("  -> [AVISO] atlas_bases.pt não encontrado. Pré-computando e salvando...")
+        model.precompute_and_cache_chart_bases()
+        model.save_bases(bases_path)
+
     model.load_stabilizers(checkpoint_path)
 
     # 3. Execução de inferência pura (100% desacoplada do professor)

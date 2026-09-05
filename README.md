@@ -1,4 +1,4 @@
-﻿# MathQwen: Compressão e Estabilização Funcional do Qwen 27B
+# MathQwen: Compressão e Estabilização Funcional do Qwen 27B
 
 > **Repositório de Pesquisa**: Compressão do checkpoint oficial `Qwen/Qwen3.8-27B-FP8` (64 camadas, $d=5120$) via **Atlas Assimétrico de Subespaços Compartilhados** e **Estabilizadores Compactos do Residual Stream**.
 
@@ -29,6 +29,9 @@ MathQwen/
 │   ├── config.py              # Configuração canônica (V=248.320, d=5120, 64 camadas)
 │   ├── projection.py          # Álgebra exata das bases V_joint, U_mix, U_down
 │   ├── residual.py            # Módulos SVDLinear e NonLinearGELU com solver fechado
+│   ├── calibration.py         # Calibração offline e seleção adaptativa com split triplo
+│   ├── export.py              # Exportador autônomo compacto em FP8 bloco-128
+│   ├── autonomous_model.py    # Runtime autônomo desacoplado do HuggingFace
 │   └── atlas_model.py         # Modelo de inferência e streaming
 │
 ├── experiments/
@@ -64,3 +67,15 @@ MathQwen/
 | **SVD Low-Rank ($r=128$)** | +83.89 M | 87.12% | 0.9175 | 50.00% | **38.22** |
 
 Para detalhes completos dos experimentos e fundamentação matemática, consulte [docs/00_STATUS_ATUAL.md](docs/00_STATUS_ATUAL.md) e [docs/12_ESTABILIZACAO_RESIDUAL_E_SONDAGEM_CRITICA.md](docs/12_ESTABILIZACAO_RESIDUAL_E_SONDAGEM_CRITICA.md).
+
+
+### 🚀 Modelo Atlas Autônomo e Desacoplado (FP8 Bloco-128)
+
+O modelo comprimido final reside em checkpoints/atlas_autonomous/ e executa de forma **100% independente do snapshot de 27B original**:
+
+| Configuração | Formato / Checkpoint | Tamanho em Disco | Pico VRAM | Throughput | NLL Terminal | PPL Terminal | Top-1 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Professor Oficial FP8** | HF Hub Oficial | 28,31 GB | > 18 GB | - | 1.9892 | 7.31 | 53.87% |
+| **Atlas Raw (=2048$)** | HF Hub + Projeção | 28,31 GB | ~7.2 GB | - | 7.6983 | 2204.61 | 7.34% |
+| **Atlas Stream (Persistido)** | HF Hub + bases.pt | 29,35 GB | ~5.8 GB | 2.9 tok/s | 5.8730 | 355.31 | 18.75% |
+| **Atlas Autônomo (FP8 Bloco-128)** | **Dedicado (tlas_autonomous/)** | **19,57 GB** | **5.02 GB** | **4.7 tok/s** | **6.3065** | **548.10** | **14.78%** |
