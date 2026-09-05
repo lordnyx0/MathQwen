@@ -69,3 +69,4 @@
 
 - [14_UNIVERSAL_ERROR_MANIFOLD.md](14_UNIVERSAL_ERROR_MANIFOLD.md): Prova geométrica e validação funcional da hipótese do Universal Error Manifold (UEM) em L63, separação Média vs Minimax no Grassmanniano, projeção cruzada, bootstrap e derivação analítica do sweet spot r*=32-64.
 - [15_COMMON_SPECIFIC_ERROR_MANIFOLD.md](15_COMMON_SPECIFIC_ERROR_MANIFOLD.md): Prova da decomposição canônica de dois níveis Ce = Ccommon + Cspecific em L63, comparação de métodos de extração, grid (rc, rs), bootstrap no Grassmanniano e análise funcional ponderada pela Jacobiana.
+- [`16_FUNCTIONAL_COMMON_SUBSPACE.md`](file:///C:/Users/Nyx/Desktop/MathQwen/docs/16_FUNCTIONAL_COMMON_SUBSPACE.md): Descoberta do Núcleo Compartilhado Funcional em L63, otimização de rotação em $\text{SO}(32)$, novo recorde de PPL = 186.55 com 6.29% dos parâmetros e ablação direcional de causalidade.

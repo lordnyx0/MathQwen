@@ -105,3 +105,8 @@ orm, lm_head) vinculados via hardlink NTFS (0 bytes adicionais de disco físico)
      - **NLL Terminal**: **6,3065**
      - **PPL Terminal**: **548,10**
      - **Top-1 Accuracy**: **14,78%**
+
+- **Doc 16 — Descoberta do Núcleo Compartilhado Funcional em L63 (`docs/16_FUNCTIONAL_COMMON_SUBSPACE.md`)**:
+  - **Status:** $\mathbf{CONFIRMADA\ (ORIENTAÇÃO\ FUNCIONAL\ LOCALIZADA)}$
+  - **Descoberta Central:** As bases compactas $U_c(32)$ ancoram o espaço compartilhado. A otimização de rotação em $\text{SO}(32)$ via álgebra de Lie estabeleceu o novo recorde de $\mathbf{PPL = 186{,}55}$ com apenas **$164.865$ parâmetros** ($6{,}29\%$ do SVD-256 de 2.62M parâmetros).
+  - **Ablação Causal:** Comprovada a dissociação entre energia euclidiana e sensibilidade funcional ($u_4, u_{10}, u_5$ têm alta alavancagem semântica, enquanto $u_1$ tem sub-sensibilidade).
