@@ -33,3 +33,5 @@ weights/
 scratch/
 tmp/
 *.metadata.json
+
+live_task_log.txt

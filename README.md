@@ -79,3 +79,10 @@ O modelo comprimido final reside em checkpoints/atlas_autonomous/ e executa de f
 | **Atlas Raw (=2048$)** | HF Hub + Projeção | 28,31 GB | ~7.2 GB | - | 7.6983 | 2204.61 | 7.34% |
 | **Atlas Stream (Persistido)** | HF Hub + bases.pt | 29,35 GB | ~5.8 GB | 2.9 tok/s | 5.8730 | 355.31 | 18.75% |
 | **Atlas Autônomo (FP8 Bloco-128)** | **Dedicado (tlas_autonomous/)** | **19,57 GB** | **5.02 GB** | **4.7 tok/s** | **6.3065** | **548.10** | **14.78%** |
+
+### Ciclo 24 & 25: A Prova do Upper Bound e a Tese dos 5.120 Eixos
+
+- **Ciclo 24 (Estabilização Profunda $L_0 \to L_{63}$):** Correções lineares estáticas contêm o drift em camadas iniciais ($L_8$: $-15{,}32\%$), mas sofrem **inversão semântica** interdomínios a partir de $L_{32}$, onde circuitos de código e matemática divergem ativamente de atratores estáticos de linguagem geral.
+- **Ciclo 25 (Trilho Orbital e Prova do Upper Bound Absoluto):** Extração da órbita contínua em $U_c(32)$ via Procrustes em $\text{SO}(32)$. Teste do Oráculo perfeito no subespaço $U_c(32)$ comprovou que mesmo com erro residual de apenas $0{,}286\%$ em $U_c$, o modelo colapsa para **PPL $2.382{,}18$** (Top-1 $4{,}37\%$).
+- **A Tese dos 5.120 Eixos:** $\dim(U_c) = 32$ representa apenas $0{,}625\%$ da variedade. Os $5.088$ eixos perpendiculares descontrolados dominam os produtos bilineares de Atenção e as expansões multiplicativas do SwiGLU ($5.120 \to 18.944$), tornando matematicamente impossível recuperar o raciocínio semântico profundo sem preservar a totalidade dos $5.120$ eixos.
+- **Transição para o Caminho 4:** Pesquisas de correções residuais de baixo rank definitivamente concluídas e encerradas. O foco avança para a preservação de todos os 5.120 eixos via quantização 4-bit (NF4/TorchAO) com KV-cache persistente para geração em alta velocidade (<200 ms/token) na RTX 3060 12GB.
