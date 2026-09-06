@@ -86,3 +86,11 @@ O modelo comprimido final reside em checkpoints/atlas_autonomous/ e executa de f
 - **Ciclo 25 (Trilho Orbital e Prova do Upper Bound Absoluto):** Extração da órbita contínua em $U_c(32)$ via Procrustes em $\text{SO}(32)$. Teste do Oráculo perfeito no subespaço $U_c(32)$ comprovou que mesmo com erro residual de apenas $0{,}286\%$ em $U_c$, o modelo colapsa para **PPL $2.382{,}18$** (Top-1 $4{,}37\%$).
 - **A Tese dos 5.120 Eixos:** $\dim(U_c) = 32$ representa apenas $0{,}625\%$ da variedade. Os $5.088$ eixos perpendiculares descontrolados dominam os produtos bilineares de Atenção e as expansões multiplicativas do SwiGLU ($5.120 \to 18.944$), tornando matematicamente impossível recuperar o raciocínio semântico profundo sem preservar a totalidade dos $5.120$ eixos.
 - **Transição para o Caminho 4:** Pesquisas de correções residuais de baixo rank definitivamente concluídas e encerradas. O foco avança para a preservação de todos os 5.120 eixos via quantização 4-bit (NF4/TorchAO) com KV-cache persistente para geração em alta velocidade (<200 ms/token) na RTX 3060 12GB.
+
+### Ciclo 26: Espectro Funcional do Complemento Ortogonal $U_c^\perp$
+
+- **A Pergunta Central:** Qual a dimensão funcional efetiva $r_\perp^*$ dos $5.088$ eixos fora de $U_c(32)$?
+- **Descoberta Matemática Decisiva:** A sensibilidade funcional $G_\perp = P_\perp \mathbb{E}[J^\top J] P_\perp$ é **funcionalmente densa**:
+  $$r_{\perp, 50} = 1.572, \quad r_{\perp, 90} = 3.947, \quad r_{\perp, 95} = 4.389, \quad r_{\perp, 99} = 4.851$$
+- **A Ilusão da Energia Geométrica:** As ativações ($C_h$) parecem concentradas ($r_{95} = 386$), mas o modo de maior ativação possui apenas $1{,}78\%$ da sensibilidade funcional máxima. A inteligência reside em milhares de eixos de baixa amplitude.
+- **Veredito Estrutural (Cenário C/D):** O candidato mínimo para reter $95\%$ da sensibilidade linear é $r_{\rm total} = 32 + 4.389 = 4.421$ ($86{,}35\%$ dos $5.120$ eixos originais). A compressão linear de baixo posto está matematicamente encerrada. A única rota viável é a quantização não-linear em blocos 4-bit (Caminho 4), que preserva $100\%$ dos $5.120$ eixos.
